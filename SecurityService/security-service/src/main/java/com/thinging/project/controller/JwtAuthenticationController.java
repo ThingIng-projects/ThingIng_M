@@ -29,13 +29,13 @@ public class JwtAuthenticationController {
 
     private JwtUserDetailsService userDetailsService;
 
-//    private UserServiceClient userServiceClient;
+//   @ToDo private UserServiceClient userServiceClient;
 
     public JwtAuthenticationController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, JwtUserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.userDetailsService = userDetailsService;
-//        this.userServiceClient = userServiceClient; Make unirest call
+//    @ToDo     this.userServiceClient = userServiceClient; Make unirest call
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
@@ -51,7 +51,7 @@ public class JwtAuthenticationController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ApiOperation(value = "Register new user")
     public ResponseEntity<String> saveUser(@RequestBody UserAccountDto user) throws Exception {
-        return  null; // make unirest call ;userServiceClient.createUser(user);
+        return  null; // @ToDo make unirest call ;userServiceClient.createUser(user);
     }
 
 
@@ -64,11 +64,5 @@ public class JwtAuthenticationController {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
-
-
-//    @RequestMapping(value = "/register", method = RequestMethod.POST)
-//    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
-//        return ResponseEntity.ok(userDetailsService.save(user));
-//    }
 
 }
