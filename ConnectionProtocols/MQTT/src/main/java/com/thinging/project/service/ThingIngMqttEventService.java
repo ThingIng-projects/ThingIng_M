@@ -1,0 +1,51 @@
+package com.thinging.project.service;
+
+import com.thinging.project.eventManagement.Request.MQTTEventRequest;
+import com.thinging.project.request.MQTTEventDataRequest;
+import com.thinging.project.request.ThingIngEventDataRequest;
+import com.thinging.project.mqtt.callback.ThingIngMqttEventCallback;
+import com.thinging.project.eventManagement.type.EventType;
+import com.thinging.project.eventManagement.type.ServiceType;
+import org.eclipse.paho.client.mqttv3.IMqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+
+/*  @ToDo Make unirest clients for event management service  */
+
+@Service
+public class ThingIngMqttEventService {
+
+    private IMqttClient client;
+
+    public ThingIngMqttEventService(IMqttClient client) {
+        this.client = client;
+    }
+
+    public ResponseEntity<String> createNewEvent(MQTTEventDataRequest mqttServiceEvent, String token) throws MqttException {
+
+        if (mqttServiceEvent.getServiceType() != ServiceType.MQTT_SERVICE) return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if(mqttServiceEvent.getEventType() != EventType.SYSTEM ) return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);;
+
+
+        MQTTEventRequest event = mqttServiceEvent.getEvent();
+        client.setCallback(new ThingIngMqttEventCallback(event, token));
+        client.subscribe(event.getTopic(), event.getQos());
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<String> removeEvent(MQTTEventDataRequest mqttServiceEvent, String token) throws MqttException {
+
+        if(mqttServiceEvent.getEventType() != EventType.SYSTEM ) return null;
+        if (mqttServiceEvent.getServiceType() != ServiceType.MQTT_SERVICE) return  null;
+
+        MQTTEventRequest event =  mqttServiceEvent.getEvent();
+
+        client.unsubscribe(event.getTopic());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+}

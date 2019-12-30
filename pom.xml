@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.9.RELEASE</version>
+    </parent>
+
+    <artifactId>ThingIng</artifactId>
+    <groupId>com.ThingIng</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>ThingingCore/thinging-core</module>
+        <module>DataService/data-service</module>
+        <module>EventManagementService/event-management-service</module>
+        <module>SecurityService/security-service</module>
+        <module>UserService/user-service</module>
+        <module>ThingsService/things-service</module>
+        <module>ConnectionProtocols/MQTT</module>
+        <module>ConnectionProtocols/COAP</module>
+    </modules>
+
+    <properties>
+        <java.version>11</java.version>
+        <springfox.version>2.9.2</springfox.version>
+
+        <postgresql.driver.version>42.2.5</postgresql.driver.version>
+        <junit.jupiter.version>5.3.2</junit.jupiter.version>
+        <com.ThingIng.project.model.mapper.version>2.3.5</com.ThingIng.project.model.mapper.version>
+
+    </properties>
+
+</project>
