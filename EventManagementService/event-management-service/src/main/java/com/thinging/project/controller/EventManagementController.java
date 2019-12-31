@@ -1,5 +1,6 @@
 package com.thinging.project.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.thinging.project.request.EventManagementServiceEventDataRequest;
 import com.thinging.project.service.EventManagementService;
 import io.swagger.annotations.Api;
@@ -27,7 +28,7 @@ public class EventManagementController extends AbstractController{
     @PostMapping("/register")
     public ResponseEntity<EventManagementServiceEventDataRequest> register(
             @RequestHeader("Authorization") String token,
-            @RequestBody EventManagementServiceEventDataRequest event){
+            @RequestBody EventManagementServiceEventDataRequest event) throws JsonProcessingException {
 
        return respondOK(eventManagementService.createEvent(event,token));
     }

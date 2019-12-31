@@ -1,22 +1,22 @@
 package com.thinging.project.mqtt.callback;
 
-import com.thinging.project.eventManagement.Request.MQTTEventRequest;
+import com.thinging.project.client.EndpointManager;
+import com.thinging.project.eventManagement.request.MQTTEventRequest;
 import com.thinging.project.eventManagement.dto.MQTTEventData;
-import com.thinging.project.response.ThingIngEventData;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-
-/*  @ToDo Make unirest clients for event management service  */
 
 public class ThingIngMqttEventCallback implements MqttCallback {
 
    private MQTTEventRequest eventRequestData;
    private String token;
+   private  EndpointManager endpointManager;
 
-   public ThingIngMqttEventCallback(MQTTEventRequest mqttEventData, String token){
+   public ThingIngMqttEventCallback(EndpointManager endpointManager, MQTTEventRequest mqttEventData, String token){
        this.eventRequestData = mqttEventData;
        this.token = token;
+       this.endpointManager = endpointManager;
    }
 
     @Override
@@ -32,6 +32,7 @@ public class ThingIngMqttEventCallback implements MqttCallback {
         responseData.setId(mqttMessage.getId());
         responseData.setPayload(new String(mqttMessage.getPayload()));
 
+        endpointManager.mqttSendEvent(token, responseData);
         System.out.println("Message delivered "+responseData);
 
     }

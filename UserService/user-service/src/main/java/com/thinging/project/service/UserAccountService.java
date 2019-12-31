@@ -22,6 +22,10 @@ public class UserAccountService {
     private UserAccountRepository userRepository;
 
     public ResponseEntity<String> createUser(UserAccountDto userReq) {
+
+        if(userRepository.existsByEmail(userReq.getEmail()))
+            return new ResponseEntity<>("User Already exists", HttpStatus.OK);
+
         UserAccount newUser = userReq.mapToUser(new UserAccount());
         userRepository.save(newUser);
         return new ResponseEntity<>("User Successfully Created!", HttpStatus.CREATED);

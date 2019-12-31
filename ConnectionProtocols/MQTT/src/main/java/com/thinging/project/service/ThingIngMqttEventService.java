@@ -1,8 +1,8 @@
 package com.thinging.project.service;
 
-import com.thinging.project.eventManagement.Request.MQTTEventRequest;
+import com.thinging.project.client.EndpointManager;
+import com.thinging.project.eventManagement.request.MQTTEventRequest;
 import com.thinging.project.request.MQTTEventDataRequest;
-import com.thinging.project.request.ThingIngEventDataRequest;
 import com.thinging.project.mqtt.callback.ThingIngMqttEventCallback;
 import com.thinging.project.eventManagement.type.EventType;
 import com.thinging.project.eventManagement.type.ServiceType;
@@ -12,16 +12,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-
-/*  @ToDo Make unirest clients for event management service  */
-
 @Service
 public class ThingIngMqttEventService {
 
     private IMqttClient client;
+    private EndpointManager endpointManager;
 
-    public ThingIngMqttEventService(IMqttClient client) {
+    public ThingIngMqttEventService(IMqttClient client, EndpointManager endpointManager) {
         this.client = client;
+        this.endpointManager = endpointManager;
     }
 
     public ResponseEntity<String> createNewEvent(MQTTEventDataRequest mqttServiceEvent, String token) throws MqttException {
@@ -31,7 +30,7 @@ public class ThingIngMqttEventService {
 
 
         MQTTEventRequest event = mqttServiceEvent.getEvent();
-        client.setCallback(new ThingIngMqttEventCallback(event, token));
+        client.setCallback(new ThingIngMqttEventCallback(endpointManager,event, token));
         client.subscribe(event.getTopic(), event.getQos());
 
         return new ResponseEntity<>(HttpStatus.CREATED);

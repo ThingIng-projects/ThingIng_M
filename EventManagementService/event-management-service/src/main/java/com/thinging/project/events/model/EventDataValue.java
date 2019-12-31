@@ -1,6 +1,5 @@
 package com.thinging.project.events.model;
 
-import com.thinging.project.eventManagement.Request.EventRequest;
 import com.thinging.project.eventManagement.type.ServiceType;
 
 public class EventDataValue {

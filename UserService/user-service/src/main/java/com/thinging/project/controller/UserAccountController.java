@@ -32,13 +32,9 @@ public class UserAccountController {
         return userService.deleteUser(id);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable("id") Long id){
-        return userService.getUserById(id);
-    }
 
-    @GetMapping("/email")
-    public ResponseEntity<UserAccountDto> getUserByEmail(@RequestParam("email") String email){
+    @GetMapping("/{email}")
+    public ResponseEntity<UserAccountDto> getUserByEmail(@PathVariable("email") String email){
         return userService.getUserByEmail(email);
     }
 

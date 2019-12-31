@@ -1,4 +1,4 @@
-package com.thinging.project.eventManagement.Request;
+package com.thinging.project.eventManagement.request;
 
 
 public class MQTTEventRequest extends EventRequest {

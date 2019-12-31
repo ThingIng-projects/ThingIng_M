@@ -1,5 +1,6 @@
 package com.thinging.project.controller;
 
+import com.thinging.project.client.EndpointManager;
 import com.thinging.project.security.utils.JwtTokenUtil;
 import com.thinging.project.security.dto.JwtRequest;
 import com.thinging.project.security.dto.JwtResponse;
@@ -29,20 +30,21 @@ public class JwtAuthenticationController {
 
     private JwtUserDetailsService userDetailsService;
 
-//   @ToDo private UserServiceClient userServiceClient;
+    private EndpointManager endpointManager;
 
-    public JwtAuthenticationController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, JwtUserDetailsService userDetailsService) {
+    public JwtAuthenticationController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil,
+                                       JwtUserDetailsService userDetailsService, EndpointManager endpointManager) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.userDetailsService = userDetailsService;
-//    @ToDo     this.userServiceClient = userServiceClient; Make unirest call
+        this.endpointManager = endpointManager;
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     @ApiOperation(value = "create authentication token")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        final UserAccountDto userDetails = new UserAccountDto(); //userServiceClient.getUserByEmail(authenticationRequest.getUsername()).getBody();
+        final UserAccountDto userDetails = endpointManager.userServiceGetUserByEmail(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new JwtResponse(token));
@@ -51,7 +53,7 @@ public class JwtAuthenticationController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ApiOperation(value = "Register new user")
     public ResponseEntity<String> saveUser(@RequestBody UserAccountDto user) throws Exception {
-        return  null; // @ToDo make unirest call ;userServiceClient.createUser(user);
+        return ResponseEntity.ok(endpointManager.userServiceCreateUser(user));
     }
 
 

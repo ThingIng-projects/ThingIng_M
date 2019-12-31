@@ -1,6 +1,6 @@
 package com.thinging.project.eventManagement.type;
 
-import com.thinging.project.eventManagement.Request.*;
+import com.thinging.project.eventManagement.request.*;
 
 public enum ServiceType {
     THINGS_SERVICE,

@@ -9,14 +9,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/events")
 public class EventHandlerController{
 
-
-    @PostMapping("/handle")
-    public void eventDetected(
-            @RequestHeader("Authorization") String token,
-            @RequestBody ThingIngEventData event){
-
-    }
-
     @PostMapping("/mqtt/handler")
     public ResponseEntity<String> messageDelivered(
             @RequestHeader("Authorization" ) String token,

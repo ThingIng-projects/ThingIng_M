@@ -1,4 +1,4 @@
-package com.thinging.project.eventManagement.Request;
+package com.thinging.project.eventManagement.request;
 
 import com.thinging.project.eventManagement.type.Function;
 

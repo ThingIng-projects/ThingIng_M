@@ -1,33 +1,26 @@
 package com.thinging.project.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.thinging.project.client.EndpointManager;
 import com.thinging.project.request.ThingIngEventDataRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-
-/*
- * @ToDo Make unirest clients for servers
- * */
-
 @Service
 public class EventSenderService {
-//    private COAPServiceClient coapServiceClient;
-//    private MQTTServiceClient mqttServiceClient;
-//    private ThingsServiceClient thingsServiceClient;
-//
-//    public EventSenderService(COAPServiceClient coapServiceClient, MQTTServiceClient mqttServiceClient, ThingsServiceClient thingsServiceClient) {
-//        this.coapServiceClient = coapServiceClient;
-//        this.mqttServiceClient = mqttServiceClient;
-//        this.thingsServiceClient = thingsServiceClient;
-//    }
 
 
-    public ResponseEntity<String> send(ThingIngEventDataRequest requestData,String token){
+    private EndpointManager endpointManager;
+
+    public EventSenderService(EndpointManager endpointManager) {
+        this.endpointManager = endpointManager;
+    }
+
+    public ResponseEntity<String> send(ThingIngEventDataRequest requestData, String token) throws JsonProcessingException {
 
         switch (requestData.getServiceType()){
             case MQTT_SERVICE:
-                return null; //mqttServiceClient.register(token, requestData); @ToDo Make unirest clients for servers
-
+                    return ResponseEntity.ok(endpointManager.mqttRegisterEvent(token,requestData));
             default:
                 return null;
         }

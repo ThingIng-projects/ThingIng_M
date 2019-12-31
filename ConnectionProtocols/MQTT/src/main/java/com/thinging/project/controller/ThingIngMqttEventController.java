@@ -1,7 +1,6 @@
 package com.thinging.project.controller;
 
 import com.thinging.project.request.MQTTEventDataRequest;
-import com.thinging.project.request.ThingIngEventDataRequest;
 import com.thinging.project.service.ThingIngMqttEventService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

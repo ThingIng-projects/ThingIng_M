@@ -1,6 +1,7 @@
 package com.thinging.project.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.thinging.project.entity.ThingingEvent;
 import com.thinging.project.request.EventManagementServiceEventDataRequest;
 import com.thinging.project.request.ThingIngEventDataRequest;
@@ -26,7 +27,7 @@ public class EventManagementService {
         this.dataParser = dataParser;
     }
 
-    public EventManagementServiceEventDataRequest createEvent(EventManagementServiceEventDataRequest requestData, String token){
+    public EventManagementServiceEventDataRequest createEvent(EventManagementServiceEventDataRequest requestData, String token) throws JsonProcessingException {
 
         ThingIngEventDataRequest thingIngEventDataRequest = dataParser.eventManagementRequestToThIngIngEvent(requestData);
 

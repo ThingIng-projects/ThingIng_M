@@ -1,7 +1,7 @@
 package com.thinging.project.utils;
 
 import com.thinging.project.entity.ThingingEvent;
-import com.thinging.project.eventManagement.Request.*;
+import com.thinging.project.eventManagement.request.*;
 import com.thinging.project.eventManagement.dto.ThingIngAction;
 import com.thinging.project.events.model.EventDataValue;
 import com.thinging.project.request.EventManagementServiceEventDataRequest;

@@ -1,12 +1,8 @@
 package com.thinging.project.persistance;
 
-import com.thinging.project.eventManagement.Request.EventRequest;
-import com.thinging.project.eventManagement.Request.MQTTEventRequest;
-import com.thinging.project.eventManagement.dto.EventData;
-import com.thinging.project.eventManagement.type.EventType;
+import com.thinging.project.eventManagement.request.EventRequest;
 import com.thinging.project.eventManagement.type.ServiceType;
 import com.thinging.project.events.model.EventDataValue;
-import com.thinging.project.request.ThingIngEventDataRequest;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
