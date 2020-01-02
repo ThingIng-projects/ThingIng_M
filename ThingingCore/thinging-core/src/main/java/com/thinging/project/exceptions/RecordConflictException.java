@@ -17,4 +17,5 @@ public class RecordConflictException extends RuntimeException {
     public ErrorCode getErrorCode() {
         return errorCode;
     }
+
 }

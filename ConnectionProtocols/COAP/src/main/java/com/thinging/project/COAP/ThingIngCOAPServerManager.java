@@ -13,14 +13,13 @@ public class ThingIngCOAPServerManager {
 
     public ThingIngCOAPServerManager(ThingIngCOAPServer thingIngCOAPServer, MessageDeliverer messageDeliverer){
             this.thingIngCOAPServer = thingIngCOAPServer;
-            this.messageDeliverer = messageDeliverer;
+            this.messageDeliverer   = messageDeliverer;
             thingIngCOAPServer.setMessageDeliverer(this.messageDeliverer);
     }
 
     public void addResource(CoapResource ...serverResources){
             thingIngCOAPServer.add(serverResources);
     }
-
 
     public void StartCOAPServer(){
        thingIngCOAPServer.start();

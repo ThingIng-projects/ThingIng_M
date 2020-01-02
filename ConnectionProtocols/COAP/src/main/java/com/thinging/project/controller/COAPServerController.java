@@ -20,7 +20,7 @@ public class COAPServerController {
 
     @GetMapping("/server/start")
     @ApiOperation("Start coap server")
-    public String startCOAPServer(){
+    public String startCOAPServer(@RequestHeader("Authorization") String token){
         coapServerManager.addResource(new ThingIngBaseResource());
         coapServerManager.StartCOAPServer();
         return "{coap:Server started}";
@@ -28,7 +28,7 @@ public class COAPServerController {
 
     @GetMapping("/server/stop")
     @ApiOperation("Stop coap server")
-    public String stopCOAPServer(){
+    public String stopCOAPServer(@RequestHeader("Authorization") String token){
 
         coapServerManager.stopCOAPServer();
 
@@ -37,8 +37,9 @@ public class COAPServerController {
 
     @GetMapping("/create/resource")
     @ApiOperation("Create resource")
-    public String addNewResource(@RequestParam("resource") String resource){
+    public String addNewResource(@RequestHeader("Authorization") String token,
+                                 @RequestParam("resource") String resource){
         coapServerManager.addResource(new ThingsControllerAbstractResource(resource));
-        return "Resource created :"+resource;
+        return "Resource created :" + resource;
     }
 }

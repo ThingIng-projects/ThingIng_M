@@ -40,4 +40,13 @@ public class MQTTEventData extends EventData {
     public void setPayload(String payload) {
         this.payload = payload;
     }
+
+    @Override
+    public String toString() {
+        return "MQTTEventData{" +
+                "Id=" + Id +
+                ", topic='" + topic + '\'' +
+                ", payload='" + payload + '\'' +
+                '}';
+    }
 }
