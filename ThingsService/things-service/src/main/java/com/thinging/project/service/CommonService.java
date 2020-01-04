@@ -92,7 +92,6 @@ public class CommonService {
         if(groupToFind.get().getThings().stream().anyMatch(thing -> thingsToAdd.contains(thing)))
             throw new DuplicatedValueException("One or more things already attached to this group");
         groupToFind.get().getThings().addAll(thingsToAdd);
-        groupToFind.get().setThings(thingsToAdd);
 
         return parser.groupToDto(groupRepository.save(groupToFind.get()));
     }

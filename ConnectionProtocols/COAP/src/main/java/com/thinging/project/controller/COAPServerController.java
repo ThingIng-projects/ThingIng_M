@@ -1,11 +1,12 @@
 package com.thinging.project.controller;
 
 import com.thinging.project.COAP.ThingIngCOAPServerManager;
-import com.thinging.project.resources.ThingIngBaseResource;
 import com.thinging.project.resources.ThingsControllerAbstractResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/coap")
@@ -21,7 +22,6 @@ public class COAPServerController {
     @GetMapping("/server/start")
     @ApiOperation("Start coap server")
     public String startCOAPServer(@RequestHeader("Authorization") String token){
-        coapServerManager.addResource(new ThingIngBaseResource());
         coapServerManager.StartCOAPServer();
         return "{coap:Server started}";
     }
@@ -39,7 +39,7 @@ public class COAPServerController {
     @ApiOperation("Create resource")
     public String addNewResource(@RequestHeader("Authorization") String token,
                                  @RequestParam("resource") String resource){
-        coapServerManager.addResource(new ThingsControllerAbstractResource(resource));
+        coapServerManager.addChildResource(resource);
         return "Resource created :" + resource;
     }
 }

@@ -31,18 +31,22 @@ public  class ThingIngCOAPNetConfig {
 
     @Bean
     public CoapResource getDefaultResource(){
-        return new ThingIngCOAPRootResource();
+        return ThingIngCOAPRootResource.build();
     }
-
 
     private static class ThingIngCOAPRootResource extends CoapResource {
 
-        private final String msg;
-        public ThingIngCOAPRootResource() {
+        private static final String msg  = new StringBuilder().append("Help Message").append("\n").toString();
+        private static final CoapResource rootResource;
+
+        static { rootResource = new ThingIngCOAPRootResource(); }
+
+        public static CoapResource build(){
+            return rootResource;
+        }
+
+        private  ThingIngCOAPRootResource() {
             super("");
-            StringBuilder builder = new StringBuilder()
-                    .append("Help Message").append("\n");
-            msg = builder.toString();
         }
 
         @Override
