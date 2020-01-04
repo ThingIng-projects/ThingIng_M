@@ -39,9 +39,6 @@ public class ThingIngCOAPServer implements ServerInterface {
         this.root = rootResource;
         this.deliverer = messageDeliverer;
 
-//        CoapResource wellKnown = new CoapResource(".well-known/core");
-//        wellKnown.setVisible(false);
-//        wellKnown.add();
         root.add(new ThingIngDiscoveryResource(root));
         this.endpoints = new ArrayList<>();
     }

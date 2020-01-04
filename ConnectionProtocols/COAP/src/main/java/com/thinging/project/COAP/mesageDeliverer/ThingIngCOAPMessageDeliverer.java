@@ -34,12 +34,9 @@ public class ThingIngCOAPMessageDeliverer implements MessageDeliverer {
 
         Request request = exchange.getRequest();
         String path = request.getOptions().getUriPathString();
-        System.out.println("request ::" +path);
         final Resource resource = findResource(path);
-
         if (resource != null) {
             checkForObserveOption(exchange, resource);
-
             Executor executor = resource.getExecutor();
             if (executor != null) {
                 executor.execute(new Runnable() {

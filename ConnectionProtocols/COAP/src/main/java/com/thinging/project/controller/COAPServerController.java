@@ -1,12 +1,9 @@
 package com.thinging.project.controller;
 
 import com.thinging.project.COAP.ThingIngCOAPServerManager;
-import com.thinging.project.resources.ThingsControllerAbstractResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/coap")
