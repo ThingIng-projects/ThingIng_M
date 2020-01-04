@@ -1,42 +1,51 @@
 package com.thinging.project.controller;
 
 import com.thinging.project.COAP.ThingIngCOAPServerManager;
+import com.thinging.project.exceptions.COAPServerNotStartedException;
+import com.thinging.project.exceptions.utils.ErrorCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Validator;
 
 @RestController
 @RequestMapping("/api/coap")
 @Api(value = "COAP protocol manager")
-public class COAPServerController {
+public class COAPServerController extends AbstractController{
 
     private ThingIngCOAPServerManager coapServerManager;
 
-    public COAPServerController(ThingIngCOAPServerManager coapServerManager){
+    public COAPServerController(Validator validator, ThingIngCOAPServerManager coapServerManager) {
+        super(validator);
         this.coapServerManager = coapServerManager;
     }
 
     @GetMapping("/server/start")
     @ApiOperation("Start coap server")
-    public String startCOAPServer(@RequestHeader("Authorization") String token){
+    public ResponseEntity<String> startCOAPServer(@RequestHeader("Authorization") String token){
+
         coapServerManager.StartCOAPServer();
-        return "{coap:Server started}";
+
+        return respondOK("Server started");
     }
 
     @GetMapping("/server/stop")
     @ApiOperation("Stop coap server")
-    public String stopCOAPServer(@RequestHeader("Authorization") String token){
+    public ResponseEntity<String> stopCOAPServer(@RequestHeader("Authorization") String token){
 
         coapServerManager.stopCOAPServer();
 
-        return "{coap:Server stopped}";
+        return respondOK("Server stopped");
     }
 
     @GetMapping("/create/resource")
     @ApiOperation("Create resource")
-    public String addNewResource(@RequestHeader("Authorization") String token,
+    public ResponseEntity<String> addNewResource(@RequestHeader("Authorization") String token,
                                  @RequestParam("resource") String resource){
+
         coapServerManager.addChildResource(resource);
-        return "Resource created :" + resource;
+        return respondCreated(resource);
     }
 }

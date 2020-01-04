@@ -197,4 +197,7 @@ public class ThingIngCOAPServer implements ServerInterface {
         return root;
     }
 
+    public boolean isRunning() {
+        return running;
+    }
 }

@@ -6,10 +6,16 @@ import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Validator;
+
 @RestController
 @Api(value = "COAP events api")
 @RequestMapping("/api/coap/events")
-public class ThingIngCOAPEventController {
+public class ThingIngCOAPEventController extends AbstractController{
+
+    protected ThingIngCOAPEventController(Validator validator) {
+        super(validator);
+    }
 
     @PostMapping("/register")
     public ResponseEntity<String> register(
@@ -18,7 +24,7 @@ public class ThingIngCOAPEventController {
 
 
 
-        return ResponseEntity.ok("success");
+        return respondCreated("coapEventDataRequest");
     }
 
 }
