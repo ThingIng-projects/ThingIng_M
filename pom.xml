@@ -18,12 +18,8 @@
     <modules>
         <module>ThingingCore/thinging-core</module>
         <module>DataService/data-service</module>
-        <module>EventManagementService/event-management-service</module>
-        <module>SecurityService/security-service</module>
-        <module>UserService/user-service</module>
         <module>ThingsService/things-service</module>
-        <module>ConnectionProtocols/MQTT</module>
-        <module>ConnectionProtocols/COAP</module>
+        <module>ConnectionProtocols/connection-protocols</module>
     </modules>
 
     <properties>
@@ -31,7 +27,6 @@
         <springfox.version>2.9.2</springfox.version>
 
         <postgresql.driver.version>42.2.5</postgresql.driver.version>
-        <junit.jupiter.version>5.3.2</junit.jupiter.version>
         <com.ThingIng.project.model.mapper.version>2.3.5</com.ThingIng.project.model.mapper.version>
 
     </properties>

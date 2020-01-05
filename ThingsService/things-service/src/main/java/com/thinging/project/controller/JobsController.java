@@ -1,7 +1,7 @@
 package com.thinging.project.controller;
 
 import com.thinging.project.service.JobService;
-import com.thinging.project.security.utils.consts.JobExecutionType;
+import com.thinging.project.utils.consts.JobExecutionType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;

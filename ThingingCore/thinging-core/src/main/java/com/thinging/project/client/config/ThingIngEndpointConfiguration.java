@@ -11,10 +11,6 @@ public class ThingIngEndpointConfiguration {
     }
     private ThingIngEndpointConfiguration(){ }
 
-    /** USER service**/
-    public static final int USER_SERVICE_PORT = 8082;
-    public static final String USER_SERVICE_HOST = "http://localhost";
-    public static final String USER_SERVICE_ENDPOINT = "/user";
 
     /** EVENT_MANAGEMENT service**/
     public static final int EVENT_MANAGEMENT_SERVICE_PORT = 8083;

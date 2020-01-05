@@ -1,6 +1,6 @@
 package com.thinging.project.repository;
 
-import com.thinging.project.security.entity.ThingGroup;
+import com.thinging.project.entity.ThingGroup;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
