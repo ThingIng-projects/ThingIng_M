@@ -4,15 +4,13 @@ import com.thinging.project.dto.GroupRespDto;
 import com.thinging.project.dto.JobRespDto;
 import com.thinging.project.dto.ThingRespDto;
 
-import com.thinging.project.entity.Job;
-import com.thinging.project.entity.Thing;
-import com.thinging.project.entity.ThingGroup;
-import com.thinging.project.entity.ThingingEvent;
+import com.thinging.project.entity.*;
 import com.thinging.project.eventManagement.dto.ThingIngAction;
 import com.thinging.project.eventManagement.request.*;
 import com.thinging.project.events.model.EventDataValue;
 import com.thinging.project.request.EventManagementServiceEventDataRequest;
 import com.thinging.project.request.ThingIngEventDataRequest;
+import com.thinging.project.response.UserAccountDto;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -154,5 +152,29 @@ public class DataParser {
         }
 
         return request;
+    }
+
+    public UserAccountDto userAccountToDto(UserAccount userAccount){
+
+        UserAccountDto userAccountDto = new UserAccountDto();
+        userAccountDto.setEmail(userAccount.getEmail());
+        userAccountDto.setPassword(userAccount.getPassword());
+        userAccountDto.setFirstName(userAccount.getFirstName());
+        userAccountDto.setLastName(userAccount.getLastName());
+        userAccountDto.setRole(userAccount.getRole());
+
+        return userAccountDto;
+    }
+    public UserAccount dtoToUserAccount(UserAccountDto userAccountDto,UserAccount existing){
+
+        UserAccount userAccount = existing==null ? new UserAccount():existing;
+
+        userAccount.setEmail(userAccountDto.getEmail());
+        userAccount.setPassword(userAccountDto.getPassword());
+        userAccount.setFirstName(userAccountDto.getFirstName());
+        userAccount.setLastName(userAccountDto.getLastName());
+        userAccount.setRole(userAccountDto.getRole());
+
+        return userAccount;
     }
 }

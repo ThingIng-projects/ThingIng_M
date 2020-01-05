@@ -1,6 +1,6 @@
 package com.thinging.project.controller;
 
-import com.thinging.project.dto.UserAccountDto;
+import com.thinging.project.response.UserAccountDto;
 import com.thinging.project.security.utils.JwtTokenUtil;
 import com.thinging.project.security.dto.JwtRequest;
 import com.thinging.project.security.dto.JwtResponse;
@@ -22,15 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @Api(value="Authentication Management System")
-public class JwtAuthenticationController {
+public class AuthenticationController {
 
     private AuthenticationManager authenticationManager;
     private JwtTokenUtil jwtTokenUtil;
     private JwtUserDetailsService userDetailsService;
     private UserAccountService userAccountService;
 
-    public JwtAuthenticationController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil,
-                                       JwtUserDetailsService userDetailsService, UserAccountService userAccountService) {
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil,
+                                    JwtUserDetailsService userDetailsService, UserAccountService userAccountService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.userDetailsService = userDetailsService;

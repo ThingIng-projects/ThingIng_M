@@ -1,5 +1,6 @@
 package com.thinging.project.service;
 
+import com.thinging.project.client.EndpointManager;
 import com.thinging.project.response.UserAccountDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -19,14 +20,14 @@ public class JwtUserDetailsService implements UserDetailsService {
     private PasswordEncoder bCryptEncoder;
 
     @Autowired
-    private UserAccountService userAccountService;
+    private EndpointManager endpointManager;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         UserAccountDto user = null;
         try {
-            user = userAccountService.getUserByEmail(username).getBody();
+            user = endpointManager.userServiceGetUserByEmail(username);
         } catch (Exception e) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }

@@ -1,4 +1,4 @@
-package com.thinging.project.utils;
+package com.thinging.project.response;
 
 public enum Role {
     ADMIN,

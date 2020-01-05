@@ -19,14 +19,18 @@ public class ThingIngMqttController extends AbstractController{
     }
 
     @GetMapping("/subscribe")
-    public ResponseEntity<?> subscribeToTopic(@RequestParam("topic") String topic,
-                                           @RequestParam("qos") int qos) throws MqttException {
+    public ResponseEntity<?> subscribeToTopic(
+            @RequestParam("topic") String topic,
+            @RequestParam("qos") int qos,
+            @RequestHeader("Authorization") String token) throws MqttException {
 
         return respondOK(mqttService.subscribeToTopic(topic,qos));
     }
 
     @GetMapping("/unsubscribe")
-    public ResponseEntity<?>  unSubscribeToTopic(@RequestParam("topic-filter") String topicFilter) throws MqttException {
+    public ResponseEntity<?>  unSubscribeToTopic(
+            @RequestParam("topic-filter") String topicFilter,
+            @RequestHeader("Authorization") String token) throws MqttException {
 
         mqttService.unSubscribeFromTopic(topicFilter);
 
@@ -37,7 +41,8 @@ public class ThingIngMqttController extends AbstractController{
     @PostMapping("/publish")
     public String publishToTopic(@RequestParam("topic") String topic,
                                  @RequestParam("qos") int qos,
-                                 @RequestBody String message) throws MqttException {
+                                 @RequestBody String message,
+                                 @RequestHeader("Authorization") String token) throws MqttException {
 
             mqttService.publishToTopic(topic, message, qos);
 

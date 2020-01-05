@@ -19,7 +19,7 @@ public class ThingIngCOAPEventController extends AbstractController{
 
     @PostMapping("/register")
     public ResponseEntity<String> register(
-            @RequestHeader String token,
+            @RequestHeader("Authorization") String token,
             @RequestBody COAPEventDataRequest coapEventDataRequest){
 
 

@@ -1,6 +1,6 @@
 package com.thinging.project.entity;
 
-import com.thinging.project.utils.Role;
+import com.thinging.project.response.Role;
 
 import javax.persistence.*;
 

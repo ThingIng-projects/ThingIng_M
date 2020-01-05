@@ -1,7 +1,4 @@
-package com.thinging.project.dto;
-
-import com.thinging.project.entity.UserAccount;
-import com.thinging.project.utils.Role;
+package com.thinging.project.response;
 
 public class UserAccountDto {
 
@@ -11,22 +8,6 @@ public class UserAccountDto {
     private String lastName;
     private Role role;
 
-    public UserAccount mapToUser(UserAccount user){
-        user.setEmail(this.getEmail());
-        user.setPassword(this.getPassword());
-        user.setFirstName(this.getFirstName());
-        user.setLastName(this.getLastName());
-        user.setRole(this.getRole());
-        return user;
-    }
-
-    public void mapFromUser(UserAccount user){
-        this.setEmail(user.getEmail());
-        this.setPassword(user.getPassword());
-        this.setFirstName(user.getFirstName());
-        this.setLastName(user.getLastName());
-        this.setRole(user.getRole());
-    }
 
 
     public String getEmail() {

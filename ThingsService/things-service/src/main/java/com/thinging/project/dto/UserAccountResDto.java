@@ -1,7 +1,7 @@
 package com.thinging.project.dto;
 
 import com.thinging.project.entity.UserAccount;
-import com.thinging.project.utils.Role;
+import com.thinging.project.response.Role;
 
 public class UserAccountResDto {
 

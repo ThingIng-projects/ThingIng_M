@@ -1,4 +1,4 @@
-package com.thinging.project.controller;
+package com.thinging.project.controller.sys;
 
 import com.thinging.project.eventManagement.dto.MQTTEventData;
 import com.thinging.project.response.ThingIngEventData;

@@ -18,10 +18,9 @@ public class ThingIngEndpointConfiguration {
     public static final String EVENT_MANAGEMENT_MQTT_HANDLER = "/api/events/mqtt/handler";
 
     /** SECURITY service**/
-    public static final int SECURITY_SERVICE_PORT = 8081;
-    public static final String SECURITY_SERVICE_HOST = "http://localhost";
-    public static final String SECURITY_SERVICE_AUTHENTICATE = "/authenticate";
-    public static final String SECURITY_SERVICE_REGISTER = "/register";
+    public static final int USER_SERVICE_PORT = 8089;
+    public static final String USER_SERVICE_HOST = "http://localhost";
+    public static final String USER_SERVICE_ENDPOINT = "/user";
 
     /** MQTT service**/
     public static final int MQTT_SERVICE_PORT = 9003;

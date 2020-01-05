@@ -1,7 +1,7 @@
-package com.thinging.project.controller;
+package com.thinging.project.controller.sys;
 
 
-import com.thinging.project.dto.UserAccountDto;
+import com.thinging.project.response.UserAccountDto;
 import com.thinging.project.service.UserAccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +42,5 @@ public class UserAccountController {
     public ResponseEntity<?> getUserList(){
         return userService.getUserList();
     }
-
-
-
 
 }

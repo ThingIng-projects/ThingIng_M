@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thinging.project.client.config.ThingIngEndpointConfiguration;
 import com.thinging.project.eventManagement.dto.MQTTEventData;
 import com.thinging.project.request.ThingIngEventDataRequest;
+import com.thinging.project.response.UserAccountDto;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import org.apache.http.client.HttpClient;
@@ -47,5 +48,15 @@ public class EndpointManager {
 
         return response.getBody();
     }
+
+    public UserAccountDto userServiceGetUserByEmail(String email) throws IOException {
+        String requestURL = String.format("%s:%d%s",ThingIngEndpointConfiguration.USER_SERVICE_HOST,
+                ThingIngEndpointConfiguration.USER_SERVICE_PORT,ThingIngEndpointConfiguration.USER_SERVICE_ENDPOINT);
+
+        HttpResponse<String> response = Unirest.get(requestURL+"/"+email).asString();
+
+        return objectMapper.readValue(response.getBody(),UserAccountDto.class);
+    }
+
 
 }

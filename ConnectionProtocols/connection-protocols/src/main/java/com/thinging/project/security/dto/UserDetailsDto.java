@@ -1,5 +1,6 @@
 package com.thinging.project.security.dto;
 
+
 import com.thinging.project.response.Role;
 
 public class UserDetailsDto {
