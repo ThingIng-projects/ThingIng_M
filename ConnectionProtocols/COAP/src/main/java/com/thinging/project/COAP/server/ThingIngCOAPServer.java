@@ -39,10 +39,7 @@ public class ThingIngCOAPServer implements ServerInterface {
         this.root = rootResource;
         this.deliverer = messageDeliverer;
 
-        CoapResource wellKnown = new CoapResource(".well-known");
-        wellKnown.setVisible(false);
-        wellKnown.add(new ThingIngDiscoveryResource(root));
-        root.add(wellKnown);
+        root.add(new ThingIngDiscoveryResource(root));
         this.endpoints = new ArrayList<>();
     }
 
@@ -200,4 +197,7 @@ public class ThingIngCOAPServer implements ServerInterface {
         return root;
     }
 
+    public boolean isRunning() {
+        return running;
+    }
 }

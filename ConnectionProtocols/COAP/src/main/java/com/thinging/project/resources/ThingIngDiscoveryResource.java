@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ThingIngDiscoveryResource extends CoapResource {
 
-    public static final String ABOUT = "core";
+    public static final String ABOUT = ".well-known/core";
     private final Resource root;
 
     public ThingIngDiscoveryResource(Resource root) {
@@ -45,6 +45,7 @@ public class ThingIngDiscoveryResource extends CoapResource {
             buffer.setLength(buffer.length() - 1);
         }
 
+        System.out.println(buffer.toString());
         return buffer.toString();
     }
 }

@@ -10,5 +10,4 @@ public class MQTTServiceApplication {
 		SpringApplication.run(MQTTServiceApplication.class, args);
 	}
 
-
 }

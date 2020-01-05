@@ -1,5 +1,6 @@
 package com.thinging.project.COAP.mesageDeliverer;
 
+import com.thinging.project.resources.ErrorResource;
 import org.eclipse.californium.core.coap.CoAP;
 import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.coap.Response;
@@ -29,36 +30,26 @@ public class ThingIngCOAPMessageDeliverer implements MessageDeliverer {
 
     @Override
     public final void deliverRequest(final Exchange exchange) {
-        if (exchange == null) {
-            throw new NullPointerException("exchange must not be null");
-        }
-        boolean processed = preDeliverRequest(exchange);
-        if (!processed) {
-            Request request = exchange.getRequest();
-            List<String> path = request.getOptions().getUriPath();
-            final Resource resource = findResource(path);
-            if (resource != null) {
-                checkForObserveOption(exchange, resource);
+        if (exchange == null) throw new NullPointerException("exchange must not be null");
 
-                Executor executor = resource.getExecutor();
-                if (executor != null) {
-                    executor.execute(new Runnable() {
-
-                        public void run() {
-                            resource.handleRequest(exchange);
-                        }
-                    });
-                } else {
-                    resource.handleRequest(exchange);
-                }
+        Request request = exchange.getRequest();
+        String path = request.getOptions().getUriPathString();
+        final Resource resource = findResource(path);
+        if (resource != null) {
+            checkForObserveOption(exchange, resource);
+            Executor executor = resource.getExecutor();
+            if (executor != null) {
+                executor.execute(new Runnable() {
+                    public void run() {
+                        resource.handleRequest(exchange);
+                    }
+                });
             } else {
-                exchange.sendResponse(new Response(CoAP.ResponseCode.NOT_FOUND));
+                resource.handleRequest(exchange);
             }
+        } else {
+            exchange.sendResponse(new Response(CoAP.ResponseCode.NOT_FOUND));
         }
-    }
-
-    protected boolean preDeliverRequest(final Exchange exchange) {
-        return false;
     }
 
     protected final void checkForObserveOption(final Exchange exchange, final Resource resource) {
@@ -87,18 +78,12 @@ public class ThingIngCOAPMessageDeliverer implements MessageDeliverer {
         return root;
     }
 
-    private Resource findResource(List<String> list) {
-        LinkedList<String> path = new LinkedList<String>(list);
-        Resource current = root;
-        Resource last = null;
-        while (!path.isEmpty() && current != null) {
-            last = current;
-            String name = path.removeFirst();
-            current = current.getChild(name);
-        }
-        if (current == null) {
-            return last;
-        }
+    private Resource findResource(String path) {
+
+        Resource current = root.getChild(path);
+        if (current == null) return new ErrorResource("Cannot find any resource by path specified.",0);
+
+        System.out.println("Current is " + current.getName());
         return current;
     }
 

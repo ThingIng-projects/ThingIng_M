@@ -20,12 +20,12 @@ public class ApiDocConfig {
                 .apis(RequestHandlerSelectors
                         .basePackage("com.thinging.project.controller"))
                 .paths(PathSelectors.regex("/.*"))
-                .build().groupName("ThingIng-Group").apiInfo(apiEndPointsInfo());
+                .build().apiInfo(apiEndPointsInfo());
     }
 
     private ApiInfo apiEndPointsInfo() {
-        return new ApiInfoBuilder().title("ThingIng Api short documentation")
-                .description("TODO: ThinhIng API Description")
+        return new ApiInfoBuilder().title("TODO: Spring Boot REST API")
+                .description("TODO: REST API Description")
                 .version("TODO: version 1.0.0")
                 .build();
     }

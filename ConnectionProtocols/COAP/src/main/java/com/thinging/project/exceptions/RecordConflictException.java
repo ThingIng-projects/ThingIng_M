@@ -1,10 +1,7 @@
 package com.thinging.project.exceptions;
 
-import com.thinging.project.errors.ErrorCode;
 
-/**
- * Base exception class for record conflicts
- */
+import com.thinging.project.exceptions.utils.ErrorCode;
 
 public class RecordConflictException extends RuntimeException {
     private ErrorCode errorCode;
@@ -17,5 +14,4 @@ public class RecordConflictException extends RuntimeException {
     public ErrorCode getErrorCode() {
         return errorCode;
     }
-
 }

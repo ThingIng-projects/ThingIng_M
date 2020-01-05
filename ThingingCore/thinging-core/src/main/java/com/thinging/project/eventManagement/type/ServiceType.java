@@ -11,8 +11,6 @@ public enum ServiceType {
 
     public static String eventDataAsString(Object eventData, ServiceType serviceType) {
 
-        System.out.println(eventData.getClass());
-
         switch (serviceType){
             case COAP_SERVICE:
                 if(!(eventData instanceof COAPEventRequest)) throw new RuntimeException("Type Exception");

@@ -2,6 +2,7 @@ package com.thinging.project.controller;
 
 import com.thinging.project.service.CommonService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +11,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/connect")
-@Api("Common management")
+@Api(value="Common management")
 public class CommonServiceController extends AbstractController{
 
     private CommonService commonService;
@@ -20,7 +21,8 @@ public class CommonServiceController extends AbstractController{
         this.commonService = commonService;
     }
 
-    @GetMapping("/job/things")
+    @GetMapping("/job/thing")
+    @ApiOperation("Connect job to things")
     public ResponseEntity<?> jobToThings(
             @RequestHeader("Authorization") String token,
             @RequestHeader("Job") String jobName,
@@ -28,7 +30,8 @@ public class CommonServiceController extends AbstractController{
         return respondOK(commonService.connectJobToThings(jobName,thingNames));
     }
 
-    @GetMapping("/job/groups")
+    @GetMapping("/job/group")
+    @ApiOperation("Connect job to groups")
     public ResponseEntity<?> jobToGroups(
             @RequestHeader("Authorization") String token,
             @RequestHeader("Job") String jobName,
@@ -37,7 +40,8 @@ public class CommonServiceController extends AbstractController{
         return respondOK(commonService.connectJobToGroups(jobName,groupNames));
     }
 
-    @GetMapping("/group/things")
+    @GetMapping("/group/thing")
+    @ApiOperation("Connect things to groups")
     public ResponseEntity<?> thingsToGroup(
             @RequestHeader("Authorization") String token,
             @RequestHeader("Group") String groupName,

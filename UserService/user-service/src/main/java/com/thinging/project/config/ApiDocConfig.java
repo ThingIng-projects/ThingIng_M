@@ -29,4 +29,5 @@ public class ApiDocConfig {
                 .version("TODO: version 1.0.0")
                 .build();
     }
+
 }

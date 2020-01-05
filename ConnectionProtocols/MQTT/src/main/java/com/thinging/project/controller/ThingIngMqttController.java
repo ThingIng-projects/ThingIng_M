@@ -2,45 +2,45 @@ package com.thinging.project.controller;
 
 import com.thinging.project.service.ThingIngMqttService;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Validator;
 
 @RestController
 @RequestMapping("/api/mqtt")
-public class ThingIngMqttController {
+public class ThingIngMqttController extends AbstractController{
 
     private ThingIngMqttService mqttService;
 
-    public ThingIngMqttController(ThingIngMqttService mqttService) {
+    public ThingIngMqttController(Validator validator, ThingIngMqttService mqttService) {
+        super(validator);
         this.mqttService = mqttService;
     }
 
     @GetMapping("/subscribe")
-    public String subscribeToTopic(@RequestParam("topic") String topic,
-                                   @RequestParam("qos") int qos) throws MqttException {
+    public ResponseEntity<?> subscribeToTopic(@RequestParam("topic") String topic,
+                                           @RequestParam("qos") int qos) throws MqttException {
 
-        return mqttService.subscribeToTopic(topic,qos);
+        return respondOK(mqttService.subscribeToTopic(topic,qos));
     }
 
     @GetMapping("/unsubscribe")
-    public String unSubscribeToTopic(@RequestParam("topic-filter") String topicFilter) throws MqttException {
+    public ResponseEntity<?>  unSubscribeToTopic(@RequestParam("topic-filter") String topicFilter) throws MqttException {
 
         mqttService.unSubscribeFromTopic(topicFilter);
 
-        return "unsubscribe success";
+        return respondEmpty();
     }
 
 
     @PostMapping("/publish")
     public String publishToTopic(@RequestParam("topic") String topic,
                                  @RequestParam("qos") int qos,
-                                 @RequestBody String message){
+                                 @RequestBody String message) throws MqttException {
 
-        try {
             mqttService.publishToTopic(topic, message, qos);
-        } catch (MqttException e) {
-            e.printStackTrace();
-            return "failed";
-        }
+
 
         return "published";
     }

@@ -19,8 +19,7 @@ public class ThingIngEndpointConfiguration {
     /** EVENT_MANAGEMENT service**/
     public static final int EVENT_MANAGEMENT_SERVICE_PORT = 8083;
     public static final String EVENT_MANAGEMENT_HOST = "http://localhost";
-    public static final String EVENT_MANAGEMENT_ENDPOINT = "/api/events";
-    public static final String EVENT_MANAGEMENT_MQTT_HANDLER = "/mqtt/handler";
+    public static final String EVENT_MANAGEMENT_MQTT_HANDLER = "/api/events/mqtt/handler";
 
     /** SECURITY service**/
     public static final int SECURITY_SERVICE_PORT = 8081;
