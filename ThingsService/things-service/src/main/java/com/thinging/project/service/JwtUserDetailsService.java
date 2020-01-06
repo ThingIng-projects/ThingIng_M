@@ -1,6 +1,7 @@
 package com.thinging.project.service;
 
 import com.thinging.project.response.UserAccountDto;
+import com.thinging.project.service.sys.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +27,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         UserAccountDto user = null;
         try {
-            user = userAccountService.getUserByEmail(username).getBody();
+            user = userAccountService.getUserByEmail(username);
         } catch (Exception e) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }

@@ -1,9 +1,10 @@
 package com.thinging.project.service;
 
 import com.thinging.project.COAP.server.ThingIngCOAPServer;
-import com.thinging.project.exceptions.COAPResourceNotExistsException;
-import com.thinging.project.exceptions.COAPServerNotStartedException;
-import com.thinging.project.exceptions.COAPServerStartedException;
+
+import com.thinging.project.errors.COAPResourceNotExistsException;
+import com.thinging.project.errors.COAPServerNotStartedException;
+import com.thinging.project.errors.COAPServerStartedException;
 import com.thinging.project.resources.ThingIngCOAPAbstractResource;
 import org.eclipse.californium.core.server.MessageDeliverer;
 import org.eclipse.californium.core.server.resources.Resource;

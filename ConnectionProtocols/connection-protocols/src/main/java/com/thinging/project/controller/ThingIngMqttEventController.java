@@ -28,7 +28,7 @@ public class ThingIngMqttEventController extends AbstractController{
             @RequestHeader("Authorization") String token,
             @RequestBody MQTTEventDataRequest newEvent) throws MqttException {
 
-        validateRequest(newEvent);
+//       validateRequest(newEvent);
        return respondCreated(mqttEventService.createNewEvent(newEvent, token));
     }
 
@@ -38,7 +38,7 @@ public class ThingIngMqttEventController extends AbstractController{
             @RequestHeader("Authorization") String token,
             @RequestBody MQTTEventDataRequest unregister) throws MqttException {
 
-        validateRequest(unregister);
+//        validateRequest(unregister);
         return respondEmpty();
     }
 

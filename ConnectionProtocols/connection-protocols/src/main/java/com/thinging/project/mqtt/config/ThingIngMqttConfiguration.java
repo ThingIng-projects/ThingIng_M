@@ -1,5 +1,6 @@
 package com.thinging.project.mqtt.config;
 
+import com.thinging.project.mqtt.client.ThingIngMQTTClient;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -23,11 +24,8 @@ public class ThingIngMqttConfiguration {
     }
 
     @Bean
-    public IMqttClient mqttClient() throws MqttException {
-        MqttConnectOptions options =  new MqttConnectOptions();
-        IMqttClient mqttClient = new MqttClient("tcp://" + host + ":" + port, clientId);
-        mqttClient.connect(options);
-        return mqttClient;
+    public ThingIngMQTTClient mqttClient() throws MqttException {
+        return new ThingIngMQTTClient("tcp://" + host + ":" + port, clientId);
     }
 
     public String getHost() {

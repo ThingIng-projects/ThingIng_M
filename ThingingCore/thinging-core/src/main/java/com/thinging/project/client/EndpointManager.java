@@ -3,6 +3,8 @@ package com.thinging.project.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thinging.project.client.config.ThingIngEndpointConfiguration;
+import com.thinging.project.errors.utils.ErrorCode;
+import com.thinging.project.errors.utils.ErrorResponse;
 import com.thinging.project.eventManagement.dto.MQTTEventData;
 import com.thinging.project.request.ThingIngEventDataRequest;
 import com.thinging.project.response.UserAccountDto;
@@ -25,7 +27,7 @@ public class EndpointManager {
         this.objectMapper = mapper;
     }
 
-    public String mqttSendEvent(String token, MQTTEventData mqttEventData) throws JsonProcessingException {
+    public ErrorResponse mqttSendEvent(String token, MQTTEventData mqttEventData) throws JsonProcessingException {
         String requestURL = String.format("%s:%d%s",ThingIngEndpointConfiguration.EVENT_MANAGEMENT_HOST,
                 ThingIngEndpointConfiguration.EVENT_MANAGEMENT_SERVICE_PORT,ThingIngEndpointConfiguration.EVENT_MANAGEMENT_MQTT_HANDLER);
 
@@ -34,19 +36,24 @@ public class EndpointManager {
                 .header("Authorization",token)
                 .body(objectMapper.writeValueAsString(mqttEventData)).asString();
 
-        return response.getBody();
+
+        return new ErrorResponse(ErrorCode.ILLEGAL_ARGUMENT,response.getBody());
     }
 
-    public String mqttRegisterEvent(String token, ThingIngEventDataRequest newEvent) throws JsonProcessingException {
+    public ErrorResponse mqttRegisterEvent(String token, ThingIngEventDataRequest newEvent) throws JsonProcessingException {
         String requestURL = String.format("%s:%d%s",ThingIngEndpointConfiguration.MQTT_SERVICE_HOST,
                 ThingIngEndpointConfiguration.MQTT_SERVICE_PORT,ThingIngEndpointConfiguration.MQTT_EVENTS_CREATE);
 
         HttpResponse<String> response = Unirest.post(requestURL)
                 .header("content-type", "application/json")
-                .header("Authorization",token)
+                .header("Authorization", token)
                 .body(objectMapper.writeValueAsString(newEvent)).asString();
+        if(response.isSuccess())
+            return new ErrorResponse(ErrorCode.STATUS_OK, response.getBody());
 
-        return response.getBody();
+        System.out.println(response.getBody());
+
+        return new ErrorResponse(ErrorCode.MQTT_ERROR,response.getBody());
     }
 
     public UserAccountDto userServiceGetUserByEmail(String email) throws IOException {

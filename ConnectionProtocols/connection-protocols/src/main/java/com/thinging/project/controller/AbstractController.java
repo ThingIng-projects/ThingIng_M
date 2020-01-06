@@ -1,13 +1,13 @@
 package com.thinging.project.controller;
 
+import com.thinging.project.errors.COAPResourceNotExistsException;
+import com.thinging.project.errors.COAPServerNotStartedException;
+import com.thinging.project.errors.COAPServerStartedException;
+import com.thinging.project.errors.utils.ErrorCode;
+import com.thinging.project.errors.utils.ErrorResponse;
 import com.thinging.project.request.AbstractThingIngRequest;
-import com.thinging.project.request.COAPEventDataRequest;
-import com.thinging.project.exceptions.COAPResourceNotExistsException;
-import com.thinging.project.exceptions.COAPServerNotStartedException;
-import com.thinging.project.exceptions.COAPServerStartedException;
-import com.thinging.project.exceptions.dto.ErrorResponse;
-import com.thinging.project.exceptions.utils.ErrorCode;
-import com.thinging.project.request.MQTTEventDataRequest;
+
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
@@ -53,6 +53,14 @@ public abstract class AbstractController {
     protected final ErrorResponse returnCoapServerConflict(final COAPResourceNotExistsException e) {
         return new ErrorResponse(e.getErrorCode(), e.getMessage());
     }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(MqttException.class)
+    @ResponseBody
+    protected final ErrorResponse returnMQTTException(final MqttException e) {
+        return new ErrorResponse(ErrorCode.MQTT_ERROR, e.getMessage());
+    }
+
 
     protected <T> ResponseEntity<T> respondCreated(final T object){ return respond(object, HttpStatus.CREATED); }
     protected <T> ResponseEntity<T> respondOK(final T object){ return respond(object, HttpStatus.OK); }

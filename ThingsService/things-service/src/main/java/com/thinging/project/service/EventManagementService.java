@@ -3,6 +3,9 @@ package com.thinging.project.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.thinging.project.entity.ThingingEvent;
+import com.thinging.project.errors.ServiceUnavailableException;
+import com.thinging.project.errors.utils.ErrorCode;
+import com.thinging.project.errors.utils.ErrorResponse;
 import com.thinging.project.request.EventManagementServiceEventDataRequest;
 import com.thinging.project.request.ThingIngEventDataRequest;
 import com.thinging.project.repository.EventRepository;
@@ -31,8 +34,12 @@ public class EventManagementService {
 
         ThingIngEventDataRequest thingIngEventDataRequest = dataParser.eventManagementRequestToThIngIngEvent(requestData);
 
-        eventSenderService.send(thingIngEventDataRequest,token);
+        ErrorResponse errorResponse = eventSenderService.send(thingIngEventDataRequest,token);
 
+        if(errorResponse.getErrorCode() != ErrorCode.STATUS_OK)
+            throw new ServiceUnavailableException(errorResponse.getErrorCode(),errorResponse.getMessage());
+
+        System.out.println("Errpor code"+errorResponse.getErrorCode()+"\npayload +"+errorResponse.getMessage());
         ThingingEvent event = dataParser.thingIngEventRequestToEntity(requestData,null);
 
         return dataParser.entityToRequestData(eventRepository.save(event));

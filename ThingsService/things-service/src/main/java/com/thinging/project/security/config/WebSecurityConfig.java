@@ -45,7 +45,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.csrf().disable()
-                .authorizeRequests().antMatchers("/authenticate", "/register","/user","/user/email").permitAll()
+                .authorizeRequests()
+                .antMatchers("/authenticate", "/register","/user","/user/email")
+                .permitAll()
                 .antMatchers("/api/**").authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -53,11 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
        httpSecurity.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    /**
-     * Allows access to static resources, bypassing Spring security.
-     */
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/actuator/**"); //Spring Boot Actuator
-    }
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers(
+//                "/actuator/**"); //Spring Boot Actuator
+//    }
 }

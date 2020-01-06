@@ -28,7 +28,6 @@
 
         <postgresql.driver.version>42.2.5</postgresql.driver.version>
         <com.ThingIng.project.model.mapper.version>2.3.5</com.ThingIng.project.model.mapper.version>
-
     </properties>
 
 </project>

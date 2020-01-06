@@ -1,4 +1,5 @@
-package com.thinging.project.exceptions;
+package com.thinging.project.errors;
+
 
 import com.thinging.project.errors.utils.ErrorCode;
 
