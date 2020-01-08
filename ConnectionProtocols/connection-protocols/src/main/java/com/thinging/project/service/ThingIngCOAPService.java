@@ -2,13 +2,18 @@ package com.thinging.project.service;
 
 import com.thinging.project.COAP.server.ThingIngCOAPServer;
 
-import com.thinging.project.errors.COAPResourceNotExistsException;
-import com.thinging.project.errors.COAPServerNotStartedException;
-import com.thinging.project.errors.COAPServerStartedException;
+import com.thinging.project.errors.*;
+import com.thinging.project.eventManagement.dto.COAPEventData;
+import com.thinging.project.eventManagement.request.COAPEventRequest;
+import com.thinging.project.eventManagement.type.EventType;
+import com.thinging.project.eventManagement.type.ServiceType;
+import com.thinging.project.request.COAPEventDataRequest;
 import com.thinging.project.resources.ThingIngCOAPAbstractResource;
 import org.eclipse.californium.core.server.MessageDeliverer;
 import org.eclipse.californium.core.server.resources.Resource;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class ThingIngCOAPService {
@@ -52,4 +57,24 @@ public class ThingIngCOAPService {
     }
 
 
+    public COAPEventRequest removeEventHandler(COAPEventDataRequest coapEventDataRequest, String token) {
+        // @ToDo make it
+        return null;
+    }
+
+    public COAPEventRequest addEventHandler(COAPEventDataRequest coapEventDataRequest, String token) {
+
+        if(coapEventDataRequest.getEventType() != EventType.SYSTEM)
+            throw new ServiceTypeException(String.format("expected - %s but received %s", ServiceType.MQTT_SERVICE,coapEventDataRequest.getServiceType()));
+        if(coapEventDataRequest.getEventType() != EventType.SYSTEM )
+            throw new EventTypeException(String.format("expected - %s but received %s",EventType.SYSTEM,coapEventDataRequest.getEventType()));
+
+        COAPEventRequest coapEventData = coapEventDataRequest.getCoapEventRequest();
+
+        ThingIngCOAPAbstractResource resource = (ThingIngCOAPAbstractResource)thingIngCOAPServer.getRoot().getChild(coapEventData.getResource());
+
+        if(resource==null) throw new COAPResourceNotExistsException(String.format("resource in name %s not exists",coapEventData.getResource()));
+
+        return resource.addEvent(coapEventData);
+    }
 }

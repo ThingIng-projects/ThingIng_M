@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Validator;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/coap")
@@ -40,8 +41,9 @@ public class COAPServerController extends AbstractController{
 
     @GetMapping("/resource/create")
     @ApiOperation("Create resource")
-    public ResponseEntity<String> addNewResource(@RequestHeader("Authorization") String token,
-                                 @RequestParam("resource") String resource){
+    public ResponseEntity<String> addNewResource(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("resource") String resource){
 
         coapServerManager.addChildResource(resource);
         return respondCreated(resource);
