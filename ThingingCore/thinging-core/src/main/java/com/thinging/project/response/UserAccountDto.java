@@ -9,7 +9,6 @@ public class UserAccountDto {
     private Role role;
 
 
-
     public String getEmail() {
         return email;
     }

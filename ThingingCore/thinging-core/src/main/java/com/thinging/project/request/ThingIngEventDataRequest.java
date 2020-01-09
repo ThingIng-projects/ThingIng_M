@@ -2,6 +2,7 @@ package com.thinging.project.request;
 
 import com.thinging.project.eventManagement.request.EventRequest;
 import com.thinging.project.eventManagement.dto.ThingIngAction;
+import com.thinging.project.eventManagement.request.ThingIngActionRequest;
 import com.thinging.project.eventManagement.type.EventType;
 import com.thinging.project.eventManagement.type.ExecutionType;
 import com.thinging.project.eventManagement.type.ServiceType;
@@ -25,7 +26,7 @@ public class ThingIngEventDataRequest extends AbstractThingIngRequest{
     private EventRequest event;
 
     @NotEmpty(message = "action.is.required")
-    private ThingIngAction action;
+    private ThingIngActionRequest action;
 
 
     public EventType getEventType() {
@@ -60,11 +61,11 @@ public class ThingIngEventDataRequest extends AbstractThingIngRequest{
         this.event = event;
     }
 
-    public ThingIngAction getAction() {
+    public ThingIngActionRequest getAction() {
         return action;
     }
 
-    public void setAction(ThingIngAction action) {
+    public void setAction(ThingIngActionRequest action) {
         this.action = action;
     }
 }
