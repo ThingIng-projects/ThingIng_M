@@ -1,6 +1,5 @@
 package com.thinging.project.entity;
 
-import com.thinging.project.eventManagement.type.Function;
 import com.thinging.project.persistance.HstoreUserType;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;

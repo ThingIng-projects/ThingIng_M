@@ -58,4 +58,16 @@ public class COAPEventDataRequest extends AbstractThingIngRequest {
     public void setAction(ThingIngAction action) {
         this.action = action;
     }
+
+
+    @Override
+    public String toString() {
+        return "COAPEventDataRequest{" +
+                "eventType=" + eventType +
+                ", executionType=" + executionType +
+                ", serviceType=" + serviceType +
+                ", coapEventRequest=" + coapEventRequest +
+                ", action=" + action +
+                '}';
+    }
 }

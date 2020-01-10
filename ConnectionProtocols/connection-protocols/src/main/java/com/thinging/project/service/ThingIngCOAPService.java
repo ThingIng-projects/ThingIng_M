@@ -56,10 +56,14 @@ public class ThingIngCOAPService {
         return thingIngCOAPServer;
     }
 
+    public void removeEventHandler(String resourceDeleteFrom, String token) {
 
-    public COAPEventRequest removeEventHandler(COAPEventDataRequest coapEventDataRequest, String token) {
-        // @ToDo make it
-        return null;
+        ThingIngCOAPAbstractResource resource = (ThingIngCOAPAbstractResource)thingIngCOAPServer.getRoot().getChild(resourceDeleteFrom);
+
+        if(resource==null)
+            throw new COAPResourceNotExistsException(String.format("resource in name %s not exists", resourceDeleteFrom));
+
+        resource.removeEvent();
     }
 
     public COAPEventRequest addEventHandler(COAPEventDataRequest coapEventDataRequest, String token) {
@@ -69,12 +73,10 @@ public class ThingIngCOAPService {
         if(coapEventDataRequest.getEventType() != EventType.SYSTEM )
             throw new EventTypeException(String.format("expected - %s but received %s",EventType.SYSTEM,coapEventDataRequest.getEventType()));
 
-        COAPEventRequest coapEventData = coapEventDataRequest.getCoapEventRequest();
+        ThingIngCOAPAbstractResource resource = (ThingIngCOAPAbstractResource)thingIngCOAPServer.getRoot().getChild(coapEventDataRequest.getCoapEventRequest().getResource());
 
-        ThingIngCOAPAbstractResource resource = (ThingIngCOAPAbstractResource)thingIngCOAPServer.getRoot().getChild(coapEventData.getResource());
+        if(resource==null) throw new COAPResourceNotExistsException(String.format("resource in name %s not exists",coapEventDataRequest.getCoapEventRequest().getResource()));
 
-        if(resource==null) throw new COAPResourceNotExistsException(String.format("resource in name %s not exists",coapEventData.getResource()));
-
-        return resource.addEvent(coapEventData);
+        return resource.addEvent(coapEventDataRequest);
     }
 }
