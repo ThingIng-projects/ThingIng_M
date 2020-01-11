@@ -5,9 +5,8 @@ import com.thinging.project.dto.JobRespDto;
 import com.thinging.project.dto.ThingRespDto;
 
 import com.thinging.project.entity.*;
-import com.thinging.project.eventManagement.dto.ThingIngAction;
 import com.thinging.project.eventManagement.request.*;
-import com.thinging.project.events.model.EventDataValue;
+import com.thinging.project.persistance.EventDataValue;
 import com.thinging.project.request.EventManagementServiceEventDataRequest;
 import com.thinging.project.request.ThingIngEventDataRequest;
 import com.thinging.project.response.UserAccountDto;
@@ -84,12 +83,10 @@ public class DataParser {
     public ThingIngEventDataRequest eventManagementRequestToThIngIngEvent(EventManagementServiceEventDataRequest requestData) {
 
         ThingIngEventDataRequest thingIngEventDataRequest = new ThingIngEventDataRequest();
-
         thingIngEventDataRequest.setExecutionType(requestData.getExecutionType());
         thingIngEventDataRequest.setServiceType(requestData.getServiceType());
         thingIngEventDataRequest.setEventType(requestData.getEventType());
         thingIngEventDataRequest.setAction(requestData.getAction());
-
 
         switch (requestData.getServiceType()){
             case MQTT_SERVICE:
@@ -125,9 +122,13 @@ public class DataParser {
         request.setExecutionType(thingingEvent.getExecutionType());
         request.setServiceType(thingingEvent.getEventDataValue().getServiceType());
 
-        ThingIngAction action = new ThingIngAction();
-        if(thingingEvent.getAction() != null)
-            action.setType(thingingEvent.getAction().getFunction());
+        ThingIngActionRequest action = new ThingIngActionRequest();
+        if(thingingEvent.getAction() != null){
+            action.setRequestMethod(thingingEvent.getAction().getRequestMethod());
+            action.setRequestUrl(thingingEvent.getAction().getRequestUrl());
+            action.setRequestHeaders(thingingEvent.getAction().getRequestHeaders());
+            action.setRequestParams(thingingEvent.getAction().getRequestParams());
+        }
 
         request.setAction(action);
 

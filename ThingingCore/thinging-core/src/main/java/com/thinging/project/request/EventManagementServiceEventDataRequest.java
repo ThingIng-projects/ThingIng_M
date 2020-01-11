@@ -15,7 +15,7 @@ public class EventManagementServiceEventDataRequest extends AbstractThingIngRequ
     @NotNull(message = "eventType.is.required") private EventType eventType;
     @NotNull(message = "executionType.is.required") private ExecutionType executionType;
     @NotNull(message = "serviceType.is.required") private ServiceType serviceType;
-    @NotEmpty(message = "action.is.required") private ThingIngAction action;
+    @NotEmpty(message = "action.is.required") private ThingIngActionRequest action;
 
     private MQTTEventRequest mqttEvent;
     private COAPEventRequest coapEvent;
@@ -48,11 +48,11 @@ public class EventManagementServiceEventDataRequest extends AbstractThingIngRequ
         this.serviceType = serviceType;
     }
 
-    public ThingIngAction getAction() {
+    public ThingIngActionRequest getAction() {
         return action;
     }
 
-    public void setAction(ThingIngAction action) {
+    public void setAction(ThingIngActionRequest action) {
         this.action = action;
     }
 

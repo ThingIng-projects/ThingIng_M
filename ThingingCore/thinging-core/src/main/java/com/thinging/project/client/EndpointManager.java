@@ -36,7 +36,6 @@ public class EndpointManager {
                 .header("Authorization",token)
                 .body(objectMapper.writeValueAsString(mqttEventData)).asString();
 
-
         return new ErrorResponse(ErrorCode.ILLEGAL_ARGUMENT,response.getBody());
     }
 

@@ -2,13 +2,19 @@ package com.thinging.project.service;
 
 import com.thinging.project.COAP.server.ThingIngCOAPServer;
 
-import com.thinging.project.errors.COAPResourceNotExistsException;
-import com.thinging.project.errors.COAPServerNotStartedException;
-import com.thinging.project.errors.COAPServerStartedException;
+import com.thinging.project.action.ThingIngActionExecutor;
+import com.thinging.project.errors.*;
+import com.thinging.project.eventManagement.dto.COAPEventData;
+import com.thinging.project.eventManagement.request.COAPEventRequest;
+import com.thinging.project.eventManagement.type.EventType;
+import com.thinging.project.eventManagement.type.ServiceType;
+import com.thinging.project.request.COAPEventDataRequest;
 import com.thinging.project.resources.ThingIngCOAPAbstractResource;
 import org.eclipse.californium.core.server.MessageDeliverer;
 import org.eclipse.californium.core.server.resources.Resource;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class ThingIngCOAPService {
@@ -51,5 +57,30 @@ public class ThingIngCOAPService {
         return thingIngCOAPServer;
     }
 
+    public void removeEventHandler(String resourceDeleteFrom, String token) {
 
+        ThingIngCOAPAbstractResource resource = (ThingIngCOAPAbstractResource)thingIngCOAPServer.getRoot().getChild(resourceDeleteFrom);
+
+        if(resource==null)
+            throw new COAPResourceNotExistsException(String.format("resource in name %s not exists", resourceDeleteFrom));
+
+        resource.removeEvent();
+    }
+
+    public COAPEventRequest addEventHandler(COAPEventDataRequest coapEventDataRequest, String token, ThingIngActionExecutor actionExecutor) {
+
+        if(coapEventDataRequest.getEventType() != EventType.SYSTEM)
+            throw new ServiceTypeException(String.format("expected - %s but received %s", EventType.SYSTEM,coapEventDataRequest.getEventType()));
+        if(coapEventDataRequest.getServiceType() != ServiceType.COAP_SERVICE )
+            throw new EventTypeException(String.format("expected - %s but received %s",ServiceType.COAP_SERVICE,coapEventDataRequest.getServiceType()));
+
+        ThingIngCOAPAbstractResource resource = (ThingIngCOAPAbstractResource)thingIngCOAPServer.getRoot().getChild(coapEventDataRequest.getCoapEventRequest().getResource());
+
+        if(resource==null) throw new COAPResourceNotExistsException(String.format("resource in name %s not exists",coapEventDataRequest.getCoapEventRequest().getResource()));
+
+        resource.setActionExecutor(actionExecutor);
+        resource.setToken(token);
+
+        return resource.addEvent(coapEventDataRequest);
+    }
 }
