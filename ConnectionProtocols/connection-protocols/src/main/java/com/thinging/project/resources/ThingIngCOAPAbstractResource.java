@@ -2,6 +2,8 @@ package com.thinging.project.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.thinging.project.action.ThingIngActionExecutor;
+import com.thinging.project.action.info.coap.COAPRequestInfo;
+import com.thinging.project.action.info.coap.COAPRequestType;
 import com.thinging.project.eventManagement.dto.ThingIngAction;
 import com.thinging.project.eventManagement.request.COAPEventRequest;
 import com.thinging.project.eventManagement.type.ExecutionType;
@@ -10,6 +12,7 @@ import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP;
 import org.eclipse.californium.core.coap.Option;
 import org.eclipse.californium.core.server.resources.CoapExchange;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +22,7 @@ public class ThingIngCOAPAbstractResource extends CoapResource {
 
     private COAPEventDataRequest eventData;
     private ThingIngActionExecutor actionExecutor;
+    private String token;
 
     public ThingIngCOAPAbstractResource(String name) {
         super(name);
@@ -49,56 +53,6 @@ public class ThingIngCOAPAbstractResource extends CoapResource {
         this.actionExecutor = actionExecutor;
     }
 
-    @Override
-    public void handleGET(CoapExchange exchange) {
-
-//        exchange.getRequestOptions().asSortedList()
-//                .stream()
-//                .forEach(resp->{
-//                    System.out.print("value: "+resp.getStringValue()+"; ");
-//                });
-        exchange.respond(CoAP.ResponseCode.CONTENT);
-
-    }
-
-    @Override
-    public void handlePOST(CoapExchange exchange) {
-
-        System.out.println("Request text = " + exchange.getRequestText());
-        System.out.println("Request Options: ");
-        exchange.getRequestOptions().asSortedList()
-                .stream()
-                .forEach(resp->{
-                    System.out.print("value: "+resp.getStringValue()+"; ");
-                });
-        exchange.respond(CoAP.ResponseCode.CONTENT);
-    }
-
-    @Override
-    public void handlePUT(CoapExchange exchange) {
-
-        System.out.println("Request Body = "+exchange.getRequestText());
-        System.out.println("Request Options: ");
-        exchange.getRequestOptions().asSortedList()
-                .stream()
-                .forEach(resp->{
-                    System.out.print("value: "+resp.getStringValue()+"; ");
-                });
-        exchange.respond(CoAP.ResponseCode.CONTENT);
-    }
-
-    @Override
-    public void handleDELETE(CoapExchange exchange) {
-
-        System.out.println("Request Options: ");
-        exchange.getRequestOptions().asSortedList()
-                .stream()
-                .forEach(resp->{
-                    System.out.print("value: "+resp.getStringValue()+"; ");
-                });
-        exchange.respond(CoAP.ResponseCode.CONTENT);
-    }
-
     public COAPEventRequest addEvent(COAPEventDataRequest coapEventData) {
         this.eventData = coapEventData;
         return eventData.getCoapEventRequest();
@@ -108,8 +62,46 @@ public class ThingIngCOAPAbstractResource extends CoapResource {
         this.eventData = null;
     }
 
+    public String getToken() {
+        return token;
+    }
 
-    private void ExecuteEvent(CoapExchange exchange) throws JsonProcessingException {
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+
+    @Override
+    public void handleGET(CoapExchange exchange) {
+
+        executeEvent(exchange,COAPRequestType.GET);
+        exchange.respond(CoAP.ResponseCode.CONTENT);
+
+    }
+
+    @Override
+    public void handlePOST(CoapExchange exchange) {
+
+        executeEvent(exchange,COAPRequestType.POST);
+        exchange.respond(CoAP.ResponseCode.CONTENT);
+    }
+
+    @Override
+    public void handlePUT(CoapExchange exchange) {
+
+        executeEvent(exchange,COAPRequestType.PUT);
+        exchange.respond(CoAP.ResponseCode.CONTENT);
+    }
+
+    @Override
+    public void handleDELETE(CoapExchange exchange) {
+
+        executeEvent(exchange,COAPRequestType.DELETE);
+        exchange.respond(CoAP.ResponseCode.CONTENT);
+    }
+
+
+    private void executeEvent(CoapExchange exchange, COAPRequestType requestType) {
 
         if(eventData == null) return;
 
@@ -117,22 +109,36 @@ public class ThingIngCOAPAbstractResource extends CoapResource {
 
         action.setRequestUrl(eventData.getAction().getRequestUrl());
         action.setRequestMethod(eventData.getAction().getRequestMethod());
-       //@ToDo make handle for it
+        action.setRequestParams(eventData.getAction().getRequestParams());
+        action.setRequestHeaders(eventData.getAction().getRequestHeaders());
+        action.setRequestMethod(RequestMethod.POST);
+
+        COAPRequestInfo coapRequestInfo = new COAPRequestInfo();
+
+
         Map<String,byte[]> requestOptions = new HashMap<>();
 
         List<Option> optionList  =  exchange.getRequestOptions().asSortedList();
 
         for(int i = 0;i<optionList.size();i++)
-            requestOptions.put(("Value_" + i), optionList.get(i).getValue());
+            requestOptions.put(("Param" + i), optionList.get(i).getValue());
 
-        exchange.getRequestPayload();
-        exchange.getSourceAddress().getHostAddress();
-        exchange.getSourcePort();
+        coapRequestInfo.setRequestType(requestType);
+        coapRequestInfo.setRequestOptions(requestOptions);
+        coapRequestInfo.setSourceAddress(exchange.getSourceAddress().getHostAddress());
+        coapRequestInfo.setSourcePort(exchange.getSourcePort());
+        coapRequestInfo.setPayload(exchange.getRequestPayload());
+        coapRequestInfo.setTimeStamp(System.currentTimeMillis());
 
-        action.setRequestBody(action);
+        action.setRequestBody(coapRequestInfo);
 
-        actionExecutor.perform("",action);
+        try {
+            actionExecutor.perform(action);
+        } catch (JsonProcessingException e) {
+            System.out.println("Error!");
+        }
 
         if(eventData.getExecutionType() == ExecutionType.ONE_TIME_EXECUTION) eventData = null;
     }
+
 }

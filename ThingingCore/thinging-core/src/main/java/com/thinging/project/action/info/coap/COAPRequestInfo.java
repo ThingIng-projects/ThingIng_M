@@ -1,16 +1,25 @@
 package com.thinging.project.action.info.coap;
 
+import com.thinging.project.action.info.MessageRequestInfo;
+
 import java.util.Map;
 
-public class COAPRequsetInfo {
+public class COAPRequestInfo extends MessageRequestInfo {
 
     private COAPRequestType requestType;
     private Map<String,byte[]> requestOptions;
     private byte[] payload;
     private String sourceAddress;
     private int sourcePort;
-    private Long timeStamp;
 
+
+    public COAPRequestType getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(COAPRequestType requestType) {
+        this.requestType = requestType;
+    }
 
     public Map<String, byte[]> getRequestOptions() {
         return requestOptions;

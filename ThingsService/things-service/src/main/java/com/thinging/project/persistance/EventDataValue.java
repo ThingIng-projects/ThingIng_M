@@ -1,4 +1,4 @@
-package com.thinging.project.events.model;
+package com.thinging.project.persistance;
 
 import com.thinging.project.eventManagement.type.ServiceType;
 

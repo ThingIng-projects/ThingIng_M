@@ -3,7 +3,7 @@ package com.thinging.project.entity;
 
 import com.thinging.project.eventManagement.type.EventType;
 import com.thinging.project.eventManagement.type.ExecutionType;
-import com.thinging.project.events.model.EventDataValue;
+import com.thinging.project.persistance.EventDataValue;
 import com.thinging.project.persistance.EventDataConverter;
 
 import javax.persistence.*;

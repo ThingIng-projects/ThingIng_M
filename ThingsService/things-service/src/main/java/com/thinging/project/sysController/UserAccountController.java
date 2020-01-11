@@ -1,6 +1,5 @@
 package com.thinging.project.sysController;
 
-
 import com.thinging.project.controller.AbstractController;
 import com.thinging.project.response.UserAccountDto;
 import com.thinging.project.service.sys.UserAccountService;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Validator;
 
-@RestController()
+@RestController
 @RequestMapping("/user")
 public class UserAccountController extends AbstractController {
 

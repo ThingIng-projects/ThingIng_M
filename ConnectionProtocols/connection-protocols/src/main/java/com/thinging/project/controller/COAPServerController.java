@@ -1,5 +1,6 @@
 package com.thinging.project.controller;
 
+import com.thinging.project.action.ThingIngActionExecutor;
 import com.thinging.project.request.COAPEventDataRequest;
 import com.thinging.project.service.ThingIngCOAPService;
 import io.swagger.annotations.Api;
@@ -16,10 +17,12 @@ import java.util.Map;
 public class COAPServerController extends AbstractController{
 
     private ThingIngCOAPService coapServerManager;
+    private ThingIngActionExecutor actionExecutor;
 
-    public COAPServerController(Validator validator, ThingIngCOAPService coapServerManager) {
+    public COAPServerController(Validator validator, ThingIngCOAPService coapServerManager, ThingIngActionExecutor actionExecutor) {
         super(validator);
         this.coapServerManager = coapServerManager;
+        this.actionExecutor = actionExecutor;
     }
 
     @GetMapping("/server/start")
@@ -59,13 +62,13 @@ public class COAPServerController extends AbstractController{
         return respondOK("success");
     }
 
-    @GetMapping("/events/create")
+    @PostMapping("/events/create")
     @ApiOperation("Register Event")
     public ResponseEntity<COAPEventDataRequest> createEvent(
             @RequestHeader("Authorization") String token,
             @RequestBody COAPEventDataRequest coapEventDataRequest){
 
-        coapServerManager.addEventHandler(coapEventDataRequest,token);
+        coapServerManager.addEventHandler(coapEventDataRequest,token,actionExecutor);
         return respondCreated(coapEventDataRequest);
     }
 

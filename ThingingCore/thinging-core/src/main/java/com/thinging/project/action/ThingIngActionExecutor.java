@@ -20,7 +20,7 @@ public class ThingIngActionExecutor {
         Unirest.config().httpClient(httpClient);
     }
 
-    public HttpResponse<?> perform(String token, ThingIngAction action) throws JsonProcessingException {
+    public HttpResponse<?> perform(ThingIngAction action) throws JsonProcessingException {
 
         HttpResponse<String> response = null;
         switch (action.getRequestMethod()){

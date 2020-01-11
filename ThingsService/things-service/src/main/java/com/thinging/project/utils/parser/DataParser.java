@@ -5,9 +5,8 @@ import com.thinging.project.dto.JobRespDto;
 import com.thinging.project.dto.ThingRespDto;
 
 import com.thinging.project.entity.*;
-import com.thinging.project.eventManagement.dto.ThingIngAction;
 import com.thinging.project.eventManagement.request.*;
-import com.thinging.project.events.model.EventDataValue;
+import com.thinging.project.persistance.EventDataValue;
 import com.thinging.project.request.EventManagementServiceEventDataRequest;
 import com.thinging.project.request.ThingIngEventDataRequest;
 import com.thinging.project.response.UserAccountDto;

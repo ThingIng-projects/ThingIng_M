@@ -3,7 +3,6 @@ package com.thinging.project.persistance;
 
 import com.thinging.project.eventManagement.request.EventRequest;
 import com.thinging.project.eventManagement.type.ServiceType;
-import com.thinging.project.events.model.EventDataValue;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

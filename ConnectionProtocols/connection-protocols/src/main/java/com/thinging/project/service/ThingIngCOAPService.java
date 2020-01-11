@@ -2,6 +2,7 @@ package com.thinging.project.service;
 
 import com.thinging.project.COAP.server.ThingIngCOAPServer;
 
+import com.thinging.project.action.ThingIngActionExecutor;
 import com.thinging.project.errors.*;
 import com.thinging.project.eventManagement.dto.COAPEventData;
 import com.thinging.project.eventManagement.request.COAPEventRequest;
@@ -66,16 +67,19 @@ public class ThingIngCOAPService {
         resource.removeEvent();
     }
 
-    public COAPEventRequest addEventHandler(COAPEventDataRequest coapEventDataRequest, String token) {
+    public COAPEventRequest addEventHandler(COAPEventDataRequest coapEventDataRequest, String token, ThingIngActionExecutor actionExecutor) {
 
         if(coapEventDataRequest.getEventType() != EventType.SYSTEM)
-            throw new ServiceTypeException(String.format("expected - %s but received %s", ServiceType.MQTT_SERVICE,coapEventDataRequest.getServiceType()));
-        if(coapEventDataRequest.getEventType() != EventType.SYSTEM )
-            throw new EventTypeException(String.format("expected - %s but received %s",EventType.SYSTEM,coapEventDataRequest.getEventType()));
+            throw new ServiceTypeException(String.format("expected - %s but received %s", EventType.SYSTEM,coapEventDataRequest.getEventType()));
+        if(coapEventDataRequest.getServiceType() != ServiceType.COAP_SERVICE )
+            throw new EventTypeException(String.format("expected - %s but received %s",ServiceType.COAP_SERVICE,coapEventDataRequest.getServiceType()));
 
         ThingIngCOAPAbstractResource resource = (ThingIngCOAPAbstractResource)thingIngCOAPServer.getRoot().getChild(coapEventDataRequest.getCoapEventRequest().getResource());
 
         if(resource==null) throw new COAPResourceNotExistsException(String.format("resource in name %s not exists",coapEventDataRequest.getCoapEventRequest().getResource()));
+
+        resource.setActionExecutor(actionExecutor);
+        resource.setToken(token);
 
         return resource.addEvent(coapEventDataRequest);
     }

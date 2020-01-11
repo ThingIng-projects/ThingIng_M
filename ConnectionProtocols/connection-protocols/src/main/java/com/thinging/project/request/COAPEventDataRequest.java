@@ -2,10 +2,10 @@ package com.thinging.project.request;
 
 import com.thinging.project.eventManagement.dto.ThingIngAction;
 import com.thinging.project.eventManagement.request.COAPEventRequest;
+import com.thinging.project.eventManagement.request.ThingIngActionRequest;
 import com.thinging.project.eventManagement.type.EventType;
 import com.thinging.project.eventManagement.type.ExecutionType;
 import com.thinging.project.eventManagement.type.ServiceType;
-import com.thinging.project.request.AbstractThingIngRequest;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -17,7 +17,7 @@ public class COAPEventDataRequest extends AbstractThingIngRequest {
     @NotNull(message = "executionType.is.required") private ExecutionType executionType;
     @NotNull(message = "serviceType.is.required") private ServiceType serviceType;
     @NotEmpty(message = "event.is.required") private COAPEventRequest coapEventRequest;
-    @NotEmpty(message = "action.is.required") private ThingIngAction action;
+    @NotEmpty(message = "action.is.required") private ThingIngActionRequest action;
 
     public EventType getEventType() {
         return eventType;
@@ -51,14 +51,13 @@ public class COAPEventDataRequest extends AbstractThingIngRequest {
         this.coapEventRequest = coapEventRequest;
     }
 
-    public ThingIngAction getAction() {
+    public ThingIngActionRequest getAction() {
         return action;
     }
 
-    public void setAction(ThingIngAction action) {
+    public void setAction(ThingIngActionRequest action) {
         this.action = action;
     }
-
 
     @Override
     public String toString() {
