@@ -17,12 +17,10 @@ import java.util.Map;
 public class COAPServerController extends AbstractController{
 
     private ThingIngCOAPService coapServerManager;
-    private ThingIngActionExecutor actionExecutor;
 
     public COAPServerController(Validator validator, ThingIngCOAPService coapServerManager, ThingIngActionExecutor actionExecutor) {
         super(validator);
         this.coapServerManager = coapServerManager;
-        this.actionExecutor = actionExecutor;
     }
 
     @GetMapping("/server/start")
@@ -60,26 +58,6 @@ public class COAPServerController extends AbstractController{
 
         coapServerManager.removeChildResource(resource);
         return respondOK("success");
-    }
-
-    @PostMapping("/events/create")
-    @ApiOperation("Register Event")
-    public ResponseEntity<COAPEventDataRequest> createEvent(
-            @RequestHeader("Authorization") String token,
-            @RequestBody COAPEventDataRequest coapEventDataRequest){
-
-        coapServerManager.addEventHandler(coapEventDataRequest,token,actionExecutor);
-        return respondCreated(coapEventDataRequest);
-    }
-
-    @GetMapping("/events/delete")
-    @ApiOperation("Register Event")
-    public ResponseEntity<String> deleteEvent(
-            @RequestHeader("Authorization") String token,
-            @RequestBody String resource){
-
-        coapServerManager.removeEventHandler(resource,token);
-        return respondCreated("removed event from "+resource+" resource");
     }
 
 }

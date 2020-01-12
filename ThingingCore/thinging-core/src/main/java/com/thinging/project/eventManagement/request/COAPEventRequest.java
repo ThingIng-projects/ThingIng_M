@@ -30,4 +30,13 @@ public class COAPEventRequest extends EventRequest {
     public void setFilter(String filter) {
         this.filter = filter;
     }
+
+    @Override
+    public String toString() {
+        return "COAPEventRequest{" +
+                "resource='" + resource + '\'' +
+                ", thingId='" + thingId + '\'' +
+                ", filter='" + filter + '\'' +
+                '}';
+    }
 }

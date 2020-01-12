@@ -38,7 +38,6 @@ public class ThingingAction {
         this.id = id;
     }
 
-
     public String getRequestUrl() {
         return requestUrl;
     }

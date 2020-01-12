@@ -24,7 +24,7 @@ public class ThingIngMqttConfiguration {
     }
 
     @Bean
-    public ThingIngMQTTClient mqttClient() throws MqttException {
+    public ThingIngMQTTClient mqttTestClient() throws MqttException {
         return new ThingIngMQTTClient("tcp://" + host + ":" + port, clientId);
     }
 

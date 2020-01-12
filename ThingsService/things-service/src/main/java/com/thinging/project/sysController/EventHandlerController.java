@@ -1,8 +1,8 @@
 package com.thinging.project.sysController;
 
 import com.thinging.project.action.info.coap.COAPRequestInfo;
+import com.thinging.project.action.info.mqtt.MQTTRequestInfo;
 import com.thinging.project.controller.AbstractController;
-import com.thinging.project.eventManagement.dto.MQTTEventData;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +19,12 @@ public class EventHandlerController extends AbstractController {
     @PostMapping("/mqtt/handler")
     public ResponseEntity<String> messageDelivered(
             @RequestHeader("Authorization" ) String token,
-            @RequestBody MQTTEventData eventData){
+            @RequestBody MQTTRequestInfo eventData){
 
 
         System.out.println("Message delivered!!!! " + eventData.getPayload());
         System.out.println("Topic information!!! "+eventData.getTopic());
+        System.out.println("Timestamp information!!! "+eventData.getTimeStamp());
 
         return ResponseEntity.ok("Successfuly created");
     }

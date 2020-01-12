@@ -1,7 +1,6 @@
 package com.thinging.project.request;
 
 import com.thinging.project.eventManagement.request.*;
-import com.thinging.project.eventManagement.dto.ThingIngAction;
 import com.thinging.project.eventManagement.type.EventType;
 import com.thinging.project.eventManagement.type.ExecutionType;
 import com.thinging.project.eventManagement.type.ServiceType;

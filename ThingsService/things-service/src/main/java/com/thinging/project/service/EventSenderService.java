@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class EventSenderService {
 
-
     private EndpointManager endpointManager;
 
     public EventSenderService(EndpointManager endpointManager) {
@@ -20,7 +19,9 @@ public class EventSenderService {
 
         switch (requestData.getServiceType()){
             case MQTT_SERVICE:
-                    return endpointManager.mqttRegisterEvent(token,requestData);
+                return endpointManager.mqttRegisterEvent(token,requestData);
+            case COAP_SERVICE:
+                return endpointManager.coapRegisterEvent(token,requestData);
             default:
                 return null;
         }

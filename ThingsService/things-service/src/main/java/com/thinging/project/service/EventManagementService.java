@@ -34,7 +34,7 @@ public class EventManagementService {
 
         ThingIngEventDataRequest thingIngEventDataRequest = dataParser.eventManagementRequestToThIngIngEvent(requestData);
 
-        ErrorResponse errorResponse = eventSenderService.send(thingIngEventDataRequest,token);
+        ErrorResponse errorResponse = eventSenderService.send(thingIngEventDataRequest, token);
 
         if(errorResponse.getErrorCode() != ErrorCode.STATUS_OK)
             throw new ServiceUnavailableException(errorResponse.getErrorCode(),errorResponse.getMessage());
