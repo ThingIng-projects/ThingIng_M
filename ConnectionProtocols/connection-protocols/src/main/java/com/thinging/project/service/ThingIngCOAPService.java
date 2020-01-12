@@ -4,7 +4,6 @@ import com.thinging.project.COAP.server.ThingIngCOAPServer;
 
 import com.thinging.project.action.ThingIngActionExecutor;
 import com.thinging.project.errors.*;
-import com.thinging.project.eventManagement.dto.COAPEventData;
 import com.thinging.project.eventManagement.request.COAPEventRequest;
 import com.thinging.project.eventManagement.type.EventType;
 import com.thinging.project.eventManagement.type.ServiceType;
@@ -14,7 +13,6 @@ import org.eclipse.californium.core.server.MessageDeliverer;
 import org.eclipse.californium.core.server.resources.Resource;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 
 @Service
 public class ThingIngCOAPService {
@@ -74,9 +72,9 @@ public class ThingIngCOAPService {
         if(coapEventDataRequest.getServiceType() != ServiceType.COAP_SERVICE )
             throw new EventTypeException(String.format("expected - %s but received %s",ServiceType.COAP_SERVICE,coapEventDataRequest.getServiceType()));
 
-        ThingIngCOAPAbstractResource resource = (ThingIngCOAPAbstractResource)thingIngCOAPServer.getRoot().getChild(coapEventDataRequest.getCoapEventRequest().getResource());
+        ThingIngCOAPAbstractResource resource = (ThingIngCOAPAbstractResource)thingIngCOAPServer.getRoot().getChild(coapEventDataRequest.getEvent().getResource());
 
-        if(resource==null) throw new COAPResourceNotExistsException(String.format("resource in name %s not exists",coapEventDataRequest.getCoapEventRequest().getResource()));
+        if(resource==null) throw new COAPResourceNotExistsException(String.format("resource in name %s not exists",coapEventDataRequest.getEvent().getResource()));
 
         resource.setActionExecutor(actionExecutor);
         resource.setToken(token);

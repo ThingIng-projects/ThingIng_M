@@ -95,19 +95,19 @@ public class DataParser {
                 break;
             case COAP_SERVICE:
                 if(requestData.getCoapEvent() == null) throw new RuntimeException("expected coap service data info");
-                thingIngEventDataRequest.setEvent(requestData.getMqttEvent());
+                thingIngEventDataRequest.setEvent(requestData.getCoapEvent());
                 break;
             case DATA_SERVICE:
                 if(requestData.getDataEvent() == null) throw new RuntimeException("expected data service data info");
-                thingIngEventDataRequest.setEvent(requestData.getMqttEvent());
+                thingIngEventDataRequest.setEvent(requestData.getDataEvent());
                 break;
             case THINGS_SERVICE:
                 if(requestData.getThingsEvent() == null) throw new RuntimeException("expected things data info");
-                thingIngEventDataRequest.setEvent(requestData.getMqttEvent());
+                thingIngEventDataRequest.setEvent(requestData.getThingsEvent());
                 break;
             case CUSTOM_SERVICE:
                 if(requestData.getCustomEvent() == null) throw new RuntimeException("expected custom data info");
-                thingIngEventDataRequest.setEvent(requestData.getMqttEvent());
+                thingIngEventDataRequest.setEvent(requestData.getCustomEvent());
                 break;
             default: throw new RuntimeException("Cannot find any service type");
         }

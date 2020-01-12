@@ -55,7 +55,7 @@ public class ThingIngCOAPAbstractResource extends CoapResource {
 
     public COAPEventRequest addEvent(COAPEventDataRequest coapEventData) {
         this.eventData = coapEventData;
-        return eventData.getCoapEventRequest();
+        return eventData.getEvent();
     }
 
     public void removeEvent(){
@@ -114,8 +114,6 @@ public class ThingIngCOAPAbstractResource extends CoapResource {
         action.setRequestMethod(RequestMethod.POST);
 
         COAPRequestInfo coapRequestInfo = new COAPRequestInfo();
-
-
         Map<String,byte[]> requestOptions = new HashMap<>();
 
         List<Option> optionList  =  exchange.getRequestOptions().asSortedList();

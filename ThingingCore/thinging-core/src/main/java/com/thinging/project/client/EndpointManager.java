@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thinging.project.client.config.ThingIngEndpointConfiguration;
 import com.thinging.project.errors.utils.ErrorCode;
 import com.thinging.project.errors.utils.ErrorResponse;
-import com.thinging.project.eventManagement.dto.MQTTEventData;
 import com.thinging.project.request.ThingIngEventDataRequest;
 import com.thinging.project.response.UserAccountDto;
 import kong.unirest.HttpResponse;
@@ -27,17 +26,15 @@ public class EndpointManager {
         this.objectMapper = mapper;
     }
 
-    public ErrorResponse mqttSendEvent(String token, MQTTEventData mqttEventData) throws JsonProcessingException {
-        String requestURL = String.format("%s:%d%s",ThingIngEndpointConfiguration.EVENT_MANAGEMENT_HOST,
-                ThingIngEndpointConfiguration.EVENT_MANAGEMENT_SERVICE_PORT,ThingIngEndpointConfiguration.EVENT_MANAGEMENT_MQTT_HANDLER);
+    public UserAccountDto userServiceGetUserByEmail(String email) throws IOException {
+        String requestURL = String.format("%s:%d%s",ThingIngEndpointConfiguration.USER_SERVICE_HOST,
+                ThingIngEndpointConfiguration.USER_SERVICE_PORT,ThingIngEndpointConfiguration.USER_SERVICE_ENDPOINT);
 
-        HttpResponse<String> response = Unirest.post(requestURL)
-                .header("content-type", "application/json")
-                .header("Authorization",token)
-                .body(objectMapper.writeValueAsString(mqttEventData)).asString();
+        HttpResponse<String> response = Unirest.get(requestURL+"/"+email).asString();
 
-        return new ErrorResponse(ErrorCode.ILLEGAL_ARGUMENT,response.getBody());
+        return objectMapper.readValue(response.getBody(),UserAccountDto.class);
     }
+
 
     public ErrorResponse mqttRegisterEvent(String token, ThingIngEventDataRequest newEvent) throws JsonProcessingException {
         String requestURL = String.format("%s:%d%s",ThingIngEndpointConfiguration.MQTT_SERVICE_HOST,
@@ -55,14 +52,19 @@ public class EndpointManager {
         return new ErrorResponse(ErrorCode.MQTT_ERROR,response.getBody());
     }
 
-    public UserAccountDto userServiceGetUserByEmail(String email) throws IOException {
-        String requestURL = String.format("%s:%d%s",ThingIngEndpointConfiguration.USER_SERVICE_HOST,
-                ThingIngEndpointConfiguration.USER_SERVICE_PORT,ThingIngEndpointConfiguration.USER_SERVICE_ENDPOINT);
+    public ErrorResponse coapRegisterEvent(String token, ThingIngEventDataRequest requestData) throws JsonProcessingException {
+        String requestURL = String.format("%s:%d%s",ThingIngEndpointConfiguration.COAP_SERVICE_HOST,
+                ThingIngEndpointConfiguration.COAP_SERVICE_PORT,ThingIngEndpointConfiguration.COAP_EVENTS_CREATE);
 
-        HttpResponse<String> response = Unirest.get(requestURL+"/"+email).asString();
+        HttpResponse<String> response = Unirest.post(requestURL)
+                .header("content-type", "application/json")
+                .header("Authorization", token)
+                .body(objectMapper.writeValueAsString(requestData)).asString();
+        if(response.isSuccess())
+            return new ErrorResponse(ErrorCode.STATUS_OK, response.getBody());
 
-        return objectMapper.readValue(response.getBody(),UserAccountDto.class);
+        System.out.println(response.getBody());
+
+        return new ErrorResponse(ErrorCode.COAP_ERROR,response.getBody());
     }
-
-
 }

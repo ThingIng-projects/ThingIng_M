@@ -16,7 +16,7 @@ public class COAPEventDataRequest extends AbstractThingIngRequest {
     @NotNull(message = "eventType.is.required") private EventType eventType;
     @NotNull(message = "executionType.is.required") private ExecutionType executionType;
     @NotNull(message = "serviceType.is.required") private ServiceType serviceType;
-    @NotEmpty(message = "event.is.required") private COAPEventRequest coapEventRequest;
+    @NotEmpty(message = "event.is.required") private COAPEventRequest event;
     @NotEmpty(message = "action.is.required") private ThingIngActionRequest action;
 
     public EventType getEventType() {
@@ -43,13 +43,9 @@ public class COAPEventDataRequest extends AbstractThingIngRequest {
         this.serviceType = serviceType;
     }
 
-    public COAPEventRequest getCoapEventRequest() {
-        return coapEventRequest;
-    }
+    public COAPEventRequest getEvent() { return event; }
 
-    public void setCoapEventRequest(COAPEventRequest coapEventRequest) {
-        this.coapEventRequest = coapEventRequest;
-    }
+    public void setEvent(COAPEventRequest event) { this.event = event; }
 
     public ThingIngActionRequest getAction() {
         return action;
@@ -65,7 +61,7 @@ public class COAPEventDataRequest extends AbstractThingIngRequest {
                 "eventType=" + eventType +
                 ", executionType=" + executionType +
                 ", serviceType=" + serviceType +
-                ", coapEventRequest=" + coapEventRequest +
+                ", event=" + event +
                 ", action=" + action +
                 '}';
     }

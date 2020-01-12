@@ -1,6 +1,8 @@
 package com.thinging.project.controller;
 
+import com.thinging.project.request.MQTTEventDataRequest;
 import com.thinging.project.service.ThingIngMqttService;
+import io.swagger.annotations.ApiOperation;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +20,13 @@ public class ThingIngMqttController extends AbstractController{
         this.mqttService = mqttService;
     }
 
-    @GetMapping("/subscribe")
+    @PostMapping("/test/subscribe")
     public ResponseEntity<?> subscribeToTopic(
+            @RequestHeader("Authorization") String token,
             @RequestParam("topic") String topic,
-            @RequestParam("qos") int qos,
-            @RequestHeader("Authorization") String token) throws MqttException {
+            @RequestParam("qos")int qos ) throws MqttException {
 
-        return respondOK(mqttService.subscribeToTopic(topic,qos));
+        return respondOK(mqttService.mqttTestSubscribe(topic,qos));
     }
 
     @GetMapping("/unsubscribe")
@@ -37,7 +39,6 @@ public class ThingIngMqttController extends AbstractController{
         return respondEmpty();
     }
 
-
     @PostMapping("/publish")
     public String publishToTopic(@RequestParam("topic") String topic,
                                  @RequestParam("qos") int qos,
@@ -46,10 +47,8 @@ public class ThingIngMqttController extends AbstractController{
 
             mqttService.publishToTopic(topic, message, qos);
 
-
         return "published";
     }
-
 
 
 }

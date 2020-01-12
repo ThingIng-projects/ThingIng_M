@@ -35,6 +35,7 @@ public class ThingIngActionExecutor {
                         .headers(action.getRequestHeaders())
                         .routeParam(action.getRequestParams())
                         .body(objectMapper.writeValueAsString(action.getRequestBody())).asString();
+                System.out.println(response.getBody());
                 break;
             case PUT:
                 response = Unirest.put(String.format(action.getRequestUrl()))
