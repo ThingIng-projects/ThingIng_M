@@ -29,13 +29,11 @@ public class UserAccountController extends AbstractController {
         return respondOK(userService.updateUser(userReq, id));
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id){
         userService.deleteUser(id);
         return respondEmpty();
     }
-
 
     @GetMapping("/{email}")
     public ResponseEntity<?> getUserByEmail(@PathVariable("email") String email){

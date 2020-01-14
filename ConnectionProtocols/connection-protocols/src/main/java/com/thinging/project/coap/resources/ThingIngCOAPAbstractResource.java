@@ -1,4 +1,4 @@
-package com.thinging.project.resources;
+package com.thinging.project.coap.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.thinging.project.action.ThingIngActionExecutor;

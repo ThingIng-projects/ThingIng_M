@@ -1,6 +1,6 @@
 package com.thinging.project.service;
 
-import com.thinging.project.COAP.server.ThingIngCOAPServer;
+import com.thinging.project.coap.server.ThingIngCOAPServer;
 
 import com.thinging.project.action.ThingIngActionExecutor;
 import com.thinging.project.errors.*;
@@ -8,7 +8,7 @@ import com.thinging.project.eventManagement.request.COAPEventRequest;
 import com.thinging.project.eventManagement.type.EventType;
 import com.thinging.project.eventManagement.type.ServiceType;
 import com.thinging.project.request.COAPEventDataRequest;
-import com.thinging.project.resources.ThingIngCOAPAbstractResource;
+import com.thinging.project.coap.resources.ThingIngCOAPAbstractResource;
 import org.eclipse.californium.core.server.MessageDeliverer;
 import org.eclipse.californium.core.server.resources.Resource;
 import org.springframework.stereotype.Service;

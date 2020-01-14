@@ -1,6 +1,6 @@
-package com.thinging.project.COAP.mesageDeliverer;
+package com.thinging.project.coap.mesageDeliverer;
 
-import com.thinging.project.resources.ErrorResource;
+import com.thinging.project.coap.resources.ErrorResource;
 import org.eclipse.californium.core.coap.CoAP;
 import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.coap.Response;

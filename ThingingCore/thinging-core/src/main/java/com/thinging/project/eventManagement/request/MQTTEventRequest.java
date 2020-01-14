@@ -3,38 +3,27 @@ package com.thinging.project.eventManagement.request;
 
 public class MQTTEventRequest extends EventRequest {
 
-    private String topic;
-    private int qos;
+    private String clientId;
     private String filter;
 
     @Override
     public String toValueString() {
-        return String.format( "%s->%d->%s", getTopic(), getQos(), getFilter() );
+        return String.format( "%s->%s", getClientId(),getFilter() );
     }
 
     @Override
     public MQTTEventRequest valueOf(String value) {
-        topic = value.substring(0,value.indexOf("->"));
-        qos = Integer.valueOf(value.substring(value.indexOf("->")+2,value.lastIndexOf("->")));
-        filter = value.substring(value.lastIndexOf("->")+2);
+        clientId = value.substring(0,value.indexOf("->"));
+        filter = value.substring(value.lastIndexOf("->") + 2);
         return this;
     }
 
-
-    public String getTopic() {
-        return topic;
+    public String getClientId() {
+        return clientId;
     }
 
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-    public int getQos() {
-        return qos;
-    }
-
-    public void setQos(int qos) {
-        this.qos = qos;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     public String getFilter() {
@@ -44,4 +33,5 @@ public class MQTTEventRequest extends EventRequest {
     public void setFilter(String filter) {
         this.filter = filter;
     }
+
 }

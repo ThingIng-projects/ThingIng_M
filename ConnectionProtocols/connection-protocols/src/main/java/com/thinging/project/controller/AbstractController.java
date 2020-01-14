@@ -1,8 +1,6 @@
 package com.thinging.project.controller;
 
-import com.thinging.project.errors.COAPResourceNotExistsException;
-import com.thinging.project.errors.COAPServerNotStartedException;
-import com.thinging.project.errors.COAPServerStartedException;
+import com.thinging.project.errors.*;
 import com.thinging.project.errors.utils.ErrorCode;
 import com.thinging.project.errors.utils.ErrorResponse;
 import com.thinging.project.request.AbstractThingIngRequest;
@@ -34,33 +32,53 @@ public abstract class AbstractController {
         return new ErrorResponse(ErrorCode.ILLEGAL_ARGUMENT, e.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseBody
+    protected final ErrorResponse runtimeError(final RuntimeException e) {
+        return new ErrorResponse(ErrorCode.RUNTIME_ERROR, e.getMessage());
+    }
+
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(COAPServerStartedException.class)
     @ResponseBody
-    protected final ErrorResponse returnCoapServerConflict(final COAPServerStartedException e) {
+    protected final ErrorResponse coapError(final COAPServerStartedException e) {
         return new ErrorResponse(e.getErrorCode(), e.getMessage());
     }
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(COAPServerNotStartedException.class)
     @ResponseBody
-    protected final ErrorResponse returnCoapServerConflict(final COAPServerNotStartedException e) {
+    protected final ErrorResponse coapError(final COAPServerNotStartedException e) {
         return new ErrorResponse(e.getErrorCode(), e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(COAPResourceNotExistsException.class)
     @ResponseBody
-    protected final ErrorResponse returnCoapServerConflict(final COAPResourceNotExistsException e) {
+    protected final ErrorResponse coapError(final COAPResourceNotExistsException e) {
+        return new ErrorResponse(e.getErrorCode(), e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(MqttClientExistsException.class)
+    @ResponseBody
+    protected final ErrorResponse mqttError(final MqttClientExistsException e) {
+        return new ErrorResponse(e.getErrorCode(), e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(MqttClientNotExistsException.class)
+    @ResponseBody
+    protected final ErrorResponse mqttError(final MqttClientNotExistsException e) {
         return new ErrorResponse(e.getErrorCode(), e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(MqttException.class)
     @ResponseBody
-    protected final ErrorResponse returnMQTTException(final MqttException e) {
+    protected final ErrorResponse mqttError(final MqttException e) {
         return new ErrorResponse(ErrorCode.MQTT_ERROR, e.getMessage());
     }
-
 
     protected <T> ResponseEntity<T> respondCreated(final T object){ return respond(object, HttpStatus.CREATED); }
     protected <T> ResponseEntity<T> respondOK(final T object){ return respond(object, HttpStatus.OK); }

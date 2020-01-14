@@ -25,6 +25,7 @@ public class EventHandlerController extends AbstractController {
         System.out.println("Message delivered!!!! " + eventData.getPayload());
         System.out.println("Topic information!!! "+eventData.getTopic());
         System.out.println("Timestamp information!!! "+eventData.getTimeStamp());
+        System.out.println("Client Id delivered!!!! " + eventData.getClientId());
 
         return ResponseEntity.ok("Successfuly created");
     }

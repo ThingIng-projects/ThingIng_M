@@ -25,7 +25,7 @@ public class ThingIngEndpointConfiguration {
     /** MQTT service**/
     public static final int MQTT_SERVICE_PORT = 9003;
     public static final String MQTT_SERVICE_HOST ="http://localhost";
-    public static final String MQTT_EVENTS_CREATE = "/system/mqtt/events/create";
+    public static final String MQTT_EVENTS_SET = "/system/mqtt/events/set";
 
     /** COAP service**/
     public static final int COAP_SERVICE_PORT = 9003;

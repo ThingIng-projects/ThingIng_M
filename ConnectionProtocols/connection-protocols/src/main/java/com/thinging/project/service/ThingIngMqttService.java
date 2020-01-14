@@ -10,6 +10,7 @@ import com.thinging.project.mqtt.callback.ThingIngMqttCallback;
 import com.thinging.project.mqtt.callback.ThingIngMqttTestCallback;
 import com.thinging.project.mqtt.client.ThingIngMQTTClient;
 import com.thinging.project.request.MQTTEventDataRequest;
+import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.stereotype.Service;
@@ -17,37 +18,36 @@ import org.springframework.stereotype.Service;
 @Service
 public class ThingIngMqttService {
 
-    private ThingIngMQTTClient testClient;
     private ThingIngActionExecutor actionExecutor;
     private ThingIngMqttClientFactoryService mqttClientFactory;
 
-    public ThingIngMqttService(ThingIngMQTTClient testClient, ThingIngActionExecutor actionExecutor, ThingIngMqttClientFactoryService mqttClientFactory) {
-        this.testClient = testClient;
+    public ThingIngMqttService(ThingIngActionExecutor actionExecutor, ThingIngMqttClientFactoryService mqttClientFactory) {
         this.actionExecutor = actionExecutor;
         this.mqttClientFactory = mqttClientFactory;
     }
 
-    public String mqttTestSubscribe(String topic, int qos) throws MqttException {
+    public void unSubscribeFromTopic(String clientId,String topic) throws MqttException {
 
-        if(!testClient.isConnected()) testClient.connect();
-
-        testClient.setCallback(new ThingIngMqttTestCallback());
-        testClient.subscribe(topic, qos);
-
-        return "Success";
-    }
-    public String unSubscribeFromTopic(String topic) throws MqttException {
-        testClient.unsubscribe(topic);
-        return "Success";
+        ThingIngMQTTClient client = mqttClientFactory.getMqttClient(clientId);
+        client.unsubscribe(topic);
     }
 
-    public String publishToTopic(String topic, String message, int QOS) throws MqttException {
+    public String publishToTopic(String clientId, String topic, String message, int QOS) throws MqttException {
 
+        ThingIngMQTTClient client = mqttClientFactory.getMqttClient(clientId);
         MqttMessage message1 = new MqttMessage();
         message1.setQos(QOS);
         message1.setPayload(message.getBytes());
 
-        testClient.publish(topic,message1);
+        client.publish(topic,message1);
+        return "Success";
+    }
+
+    public String SubscribeToTopic(String clientId,String topic,int Qos) throws MqttException {
+
+        ThingIngMQTTClient client = mqttClientFactory.getMqttClient(clientId);
+        client.subscribe(topic,Qos);
+
         return "Success";
     }
 
@@ -58,34 +58,26 @@ public class ThingIngMqttService {
         if(eventDataRequest.getEventType() != EventType.SYSTEM )
             throw new EventTypeException(String.format("expected - %s but received %s",EventType.SYSTEM,eventDataRequest.getEventType()));
 
-        ThingIngMQTTClient mqttClient = mqttClientFactory.createMqttClient();
-        if(!mqttClient.isConnected()) mqttClient.connect();
-
+        ThingIngMQTTClient mqttClient = mqttClientFactory.getMqttClient(eventDataRequest.getEvent().getClientId());
         mqttClient.setCallback(new ThingIngMqttCallback(eventDataRequest, actionExecutor));
-        mqttClient.subscribe(eventDataRequest.getEvent().getTopic(), eventDataRequest.getEvent().getQos());
 
         return String.format("{\"clientId\": \" %s\"}", mqttClient.getClientId());
     }
 
-    public String updateExistingClient(String clientId,MQTTEventDataRequest eventDataRequest) throws MqttException {
+    public String createClient(String host, int port, String clientId) throws MqttException {
+        ThingIngMQTTClient mqttClient = mqttClientFactory.createMqttClient(host, port, clientId);
+        return mqttClient.getClientId();
+    }
 
-        if (eventDataRequest.getServiceType() != ServiceType.MQTT_SERVICE)
-            throw new ServiceTypeException(String.format("expected - %s but received %s",ServiceType.MQTT_SERVICE,eventDataRequest.getServiceType()));
-        if(eventDataRequest.getEventType() != EventType.SYSTEM )
-            throw new EventTypeException(String.format("expected - %s but received %s",EventType.SYSTEM,eventDataRequest.getEventType()));
+    public void removeEventHandler(String clientId) {
+        ThingIngMQTTClient mqttClient = mqttClientFactory.getMqttClient(clientId);
+        mqttClient.setCallback(null);
+    }
 
+    public void subscribeToTopic(String clientId, String topic, int qos) throws MqttException {
         ThingIngMQTTClient mqttClient = mqttClientFactory.getMqttClient(clientId);
 
         if(!mqttClient.isConnected()) mqttClient.connect();
-
-        mqttClient.setCallback(new ThingIngMqttCallback(eventDataRequest, actionExecutor));
-        mqttClient.subscribe(eventDataRequest.getEvent().getTopic(), eventDataRequest.getEvent().getQos());
-
-        return "Success";
+        mqttClient.subscribe(topic,qos);
     }
-
-    public void removeEvent(String clientId) throws MqttException {
-        mqttClientFactory.removeThingIngClient(clientId);
-    }
-
 }
