@@ -1,6 +1,6 @@
-package com.thinging.project.COAP.config;
+package com.thinging.project.coap.config;
 
-import com.thinging.project.COAP.server.ThingIngCOAPServer;
+import com.thinging.project.coap.server.ThingIngCOAPServer;
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP;
 import org.eclipse.californium.core.network.Endpoint;

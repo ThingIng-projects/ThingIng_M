@@ -1,4 +1,4 @@
-package com.thinging.project.resources;
+package com.thinging.project.coap.resources;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP;

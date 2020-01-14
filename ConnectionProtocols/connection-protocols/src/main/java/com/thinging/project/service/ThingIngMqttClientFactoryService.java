@@ -1,5 +1,7 @@
 package com.thinging.project.service;
 
+import com.thinging.project.errors.MqttClientExistsException;
+import com.thinging.project.errors.MqttClientNotExistsException;
 import com.thinging.project.mqtt.client.ThingIngMQTTClient;
 import com.thinging.project.mqtt.config.ThingIngMqttConfiguration;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -27,8 +29,18 @@ public class ThingIngMqttClientFactoryService {
         return client;
     }
 
+    public ThingIngMQTTClient createMqttClient(String host, int port, String clientId) throws MqttException {
+        if(thingIngMQTTClients.containsKey(clientId)) throw new MqttClientExistsException("client with this id Already exists");
+
+        ThingIngMQTTClient client = new ThingIngMQTTClient("tcp://" +host + ":" + port, clientId);
+        client.connect();
+        thingIngMQTTClients.put(client.getClientId(),client);
+        return client;
+    }
+
+
     public ThingIngMQTTClient getMqttClient(String clientId){
-        if(!thingIngMQTTClients.containsKey(clientId) ) throw new RuntimeException("client with this id not exists");
+        if(!thingIngMQTTClients.containsKey(clientId) ) throw new MqttClientNotExistsException("client with this id not exists");
 
         return thingIngMQTTClients.get(clientId);
     }

@@ -5,6 +5,7 @@ import com.thinging.project.action.info.MessageRequestInfo;
 public class MQTTRequestInfo extends MessageRequestInfo {
 
     private int Id;
+    private String clientId;
     private String topic;
     private String payload;
 
@@ -23,6 +24,14 @@ public class MQTTRequestInfo extends MessageRequestInfo {
 
     public void setId(int id) {
         Id = id;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     public String getTopic() {
@@ -53,6 +62,7 @@ public class MQTTRequestInfo extends MessageRequestInfo {
     public String toString() {
         return "MQTTRequestInfo{" +
                 "Id=" + Id +
+                ", clientId='" + clientId + '\'' +
                 ", topic='" + topic + '\'' +
                 ", payload='" + payload + '\'' +
                 ", timeStamp=" + timeStamp +

@@ -45,10 +45,16 @@ public class EventManagementService {
         return dataParser.entityToRequestData(eventRepository.save(event));
     }
 
-    public EventManagementServiceEventDataRequest updateEvent(Long id,EventManagementServiceEventDataRequest requestData){
+    public EventManagementServiceEventDataRequest updateEvent(Long id,EventManagementServiceEventDataRequest requestData, String token) throws JsonProcessingException {
 
         Optional<ThingingEvent> eventOptional = eventRepository.findById(id);
         if(eventOptional.isEmpty()) throw new IllegalArgumentException("Event with id "+id+ " not exists");
+
+        ThingIngEventDataRequest thingIngEventDataRequest = dataParser.eventManagementRequestToThIngIngEvent(requestData);
+        ErrorResponse errorResponse = eventSenderService.send(thingIngEventDataRequest, token);
+
+        if(errorResponse.getErrorCode() != ErrorCode.STATUS_OK)
+            throw new ServiceUnavailableException(errorResponse.getErrorCode(),errorResponse.getMessage());
 
         ThingingEvent event = dataParser.thingIngEventRequestToEntity(requestData,eventOptional.get());
 

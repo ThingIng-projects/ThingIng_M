@@ -20,7 +20,7 @@ public class MQTTEventController extends AbstractController {
         this.mqttService = mqttService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/set")
     public ResponseEntity<?> create(
             @RequestHeader("Authorization") String token,
             @RequestBody MQTTEventDataRequest eventDataRequest) throws MqttException {
@@ -28,20 +28,11 @@ public class MQTTEventController extends AbstractController {
         return respondCreated(mqttService.addClientWithHandler(eventDataRequest));
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<?> update(
-            @RequestHeader("Authorization") String token,
-            @RequestParam("clientId" ) String clientId,
-            @RequestBody MQTTEventDataRequest eventDataRequest) throws MqttException {
-
-        return respondCreated(mqttService.updateExistingClient(clientId,eventDataRequest));
-    }
-
     @PostMapping("/delete")
     public ResponseEntity<?> delete(
             @RequestHeader("Authorization") String token,
             @RequestBody String clientId) throws MqttException {
-        mqttService.removeEvent(clientId);
+        mqttService.removeEventHandler(clientId);
         return respondEmpty();
     }
 

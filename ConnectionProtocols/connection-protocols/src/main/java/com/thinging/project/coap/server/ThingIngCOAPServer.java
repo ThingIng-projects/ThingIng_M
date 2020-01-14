@@ -1,12 +1,13 @@
-package com.thinging.project.COAP.server;
+package com.thinging.project.coap.server;
 
-import com.thinging.project.resources.ThingIngDiscoveryResource;
+import com.thinging.project.coap.resources.ThingIngDiscoveryResource;
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.network.CoapEndpoint;
 import org.eclipse.californium.core.network.Endpoint;
 import org.eclipse.californium.core.network.config.NetworkConfig;
 import org.eclipse.californium.core.server.MessageDeliverer;
 import org.eclipse.californium.core.server.ServerInterface;
+import org.eclipse.californium.core.server.resources.DiscoveryResource;
 import org.eclipse.californium.core.server.resources.Resource;
 import org.eclipse.californium.elements.util.ExecutorsUtil;
 import org.eclipse.californium.elements.util.NamedThreadFactory;
@@ -39,6 +40,7 @@ public class ThingIngCOAPServer implements ServerInterface {
         this.deliverer = messageDeliverer;
 
         root.add(new ThingIngDiscoveryResource(root));
+
         this.endpoints = new ArrayList<>();
     }
 

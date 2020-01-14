@@ -1,6 +1,5 @@
 package com.thinging.project.request;
 
-import com.thinging.project.eventManagement.dto.ThingIngAction;
 import com.thinging.project.eventManagement.request.MQTTEventRequest;
 import com.thinging.project.eventManagement.request.ThingIngActionRequest;
 import com.thinging.project.eventManagement.type.EventType;

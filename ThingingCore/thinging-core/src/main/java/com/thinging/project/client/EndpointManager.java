@@ -38,7 +38,7 @@ public class EndpointManager {
 
     public ErrorResponse mqttRegisterEvent(String token, ThingIngEventDataRequest newEvent) throws JsonProcessingException {
         String requestURL = String.format("%s:%d%s",ThingIngEndpointConfiguration.MQTT_SERVICE_HOST,
-                ThingIngEndpointConfiguration.MQTT_SERVICE_PORT,ThingIngEndpointConfiguration.MQTT_EVENTS_CREATE);
+                ThingIngEndpointConfiguration.MQTT_SERVICE_PORT,ThingIngEndpointConfiguration.MQTT_EVENTS_SET);
 
         HttpResponse<String> response = Unirest.post(requestURL)
                 .header("content-type", "application/json")
