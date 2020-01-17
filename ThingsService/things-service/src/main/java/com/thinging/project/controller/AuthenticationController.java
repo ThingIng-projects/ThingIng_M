@@ -42,6 +42,7 @@ public class AuthenticationController extends AbstractController{
     @PostMapping(value = "/authenticate")
     @ApiOperation(value = "create authentication token")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         final String token = jwtTokenUtil.generateToken(userAccountService.getUserByEmail(authenticationRequest.getUsername()));

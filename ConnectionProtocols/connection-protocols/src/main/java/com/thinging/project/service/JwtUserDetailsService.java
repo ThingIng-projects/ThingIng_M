@@ -33,7 +33,6 @@ public class JwtUserDetailsService implements UserDetailsService {
         UserAccountDto user = null;
         try {
             user = endpointManager.userServiceGetUserByEmail(username);
-            System.out.println(username);
         } catch (Exception e) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
