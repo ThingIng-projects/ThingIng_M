@@ -12,7 +12,7 @@ import javax.validation.Validator;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/coap")
+@RequestMapping("/api/coap/server")
 @Api(value = "COAP protocol manager")
 public class COAPServerController extends AbstractController{
 
@@ -23,7 +23,7 @@ public class COAPServerController extends AbstractController{
         this.coapServerManager = coapServerManager;
     }
 
-    @GetMapping("/server/start")
+    @GetMapping("/start")
     @ApiOperation("Start coap server")
     public ResponseEntity<String> startCOAPServer(@RequestHeader("Authorization") String token){
 
@@ -32,7 +32,7 @@ public class COAPServerController extends AbstractController{
         return respondOK("Server started");
     }
 
-    @GetMapping("/server/stop")
+    @GetMapping("/stop")
     @ApiOperation("Stop coap server")
     public ResponseEntity<String> stopCOAPServer(@RequestHeader("Authorization") String token){
 

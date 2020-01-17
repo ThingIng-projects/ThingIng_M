@@ -2,6 +2,7 @@ package com.thinging.project.service.sys;
 
 import com.thinging.project.errors.UserExistsException;
 import com.thinging.project.errors.UserNotExistsException;
+import com.thinging.project.response.Role;
 import com.thinging.project.response.UserAccountDto;
 import com.thinging.project.dto.UserAccountResDto;
 import com.thinging.project.entity.UserAccount;
@@ -33,6 +34,9 @@ public class UserAccountService {
 
         if(userRepository.existsByEmail(userReq.getEmail()))
             throw new UserExistsException(String.format("User with userName - %s exists",userReq.getEmail()));
+
+        if (userReq.getRole() == Role.SYSTEM)
+            if(userRepository.existsByRole(Role.SYSTEM)) throw new UserNotExistsException(String.format("Only one System role can avalible!"));
 
         UserAccount newUser = dataParser.dtoToUserAccount(userReq,null);
 

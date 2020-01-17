@@ -25,7 +25,7 @@ public class MQTTEventController extends AbstractController {
             @RequestHeader("Authorization") String token,
             @RequestBody MQTTEventDataRequest eventDataRequest) throws MqttException {
 
-        return respondCreated(mqttService.addClientWithHandler(eventDataRequest));
+        return respondCreated(mqttService.addClientWithHandler(eventDataRequest,token));
     }
 
     @PostMapping("/delete")

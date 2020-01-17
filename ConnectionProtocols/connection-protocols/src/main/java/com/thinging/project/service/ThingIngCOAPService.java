@@ -67,8 +67,6 @@ public class ThingIngCOAPService {
 
     public COAPEventRequest addEventHandler(COAPEventDataRequest coapEventDataRequest, String token, ThingIngActionExecutor actionExecutor) {
 
-        if(coapEventDataRequest.getEventType() != EventType.SYSTEM)
-            throw new ServiceTypeException(String.format("expected - %s but received %s", EventType.SYSTEM,coapEventDataRequest.getEventType()));
         if(coapEventDataRequest.getServiceType() != ServiceType.COAP_SERVICE )
             throw new EventTypeException(String.format("expected - %s but received %s",ServiceType.COAP_SERVICE,coapEventDataRequest.getServiceType()));
 

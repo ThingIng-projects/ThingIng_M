@@ -13,11 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Validator;
 
@@ -43,7 +39,7 @@ public class AuthenticationController extends AbstractController{
         this.userAccountService = userAccountService;
     }
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @PostMapping(value = "/authenticate")
     @ApiOperation(value = "create authentication token")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -53,9 +49,11 @@ public class AuthenticationController extends AbstractController{
         return respondOK(new JwtResponse(token));
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @PostMapping(value = "/users/register")
     @ApiOperation(value = "Register new user")
-    public ResponseEntity<?> saveUser(@RequestBody UserAccountDto user) throws Exception {
+    public ResponseEntity<?> saveUser(
+            @RequestHeader("Authorization") String token,
+            @RequestBody UserAccountDto user) throws Exception {
 
         return respondCreated(userAccountService.createUser(user));
     }

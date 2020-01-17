@@ -23,3 +23,5 @@
 /ThingIngClient_0-tcpbrokerhivemqcom1883/
 /ThingIngClient_1-tcpbrokerhivemqcom1883/
 /ThingIngClient_2-tcpbrokerhivemqcom1883/
+/ConnectionProtocols/connection-protocols/target/
+/testClient-tcpbrokerhivemqcom1883/

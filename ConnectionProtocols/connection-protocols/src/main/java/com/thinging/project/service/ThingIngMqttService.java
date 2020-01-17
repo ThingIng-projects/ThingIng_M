@@ -51,15 +51,13 @@ public class ThingIngMqttService {
         return "Success";
     }
 
-    public String addClientWithHandler(MQTTEventDataRequest eventDataRequest) throws MqttException {
+    public String addClientWithHandler(MQTTEventDataRequest eventDataRequest, String token) throws MqttException {
 
         if (eventDataRequest.getServiceType() != ServiceType.MQTT_SERVICE)
-            throw new ServiceTypeException(String.format("expected - %s but received %s",ServiceType.MQTT_SERVICE,eventDataRequest.getServiceType()));
-        if(eventDataRequest.getEventType() != EventType.SYSTEM )
-            throw new EventTypeException(String.format("expected - %s but received %s",EventType.SYSTEM,eventDataRequest.getEventType()));
+            throw new ServiceTypeException(String.format("expected - %s but received %s",ServiceType.MQTT_SERVICE, eventDataRequest.getServiceType()));
 
         ThingIngMQTTClient mqttClient = mqttClientFactory.getMqttClient(eventDataRequest.getEvent().getClientId());
-        mqttClient.setCallback(new ThingIngMqttCallback(eventDataRequest, actionExecutor));
+        mqttClient.setCallback(new ThingIngMqttCallback(eventDataRequest, actionExecutor,token));
 
         return String.format("{\"clientId\": \" %s\"}", mqttClient.getClientId());
     }

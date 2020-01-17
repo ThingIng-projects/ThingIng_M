@@ -34,7 +34,7 @@ public class EventManagementService {
 
         ThingIngEventDataRequest thingIngEventDataRequest = dataParser.eventManagementRequestToThIngIngEvent(requestData);
 
-        ErrorResponse errorResponse = eventSenderService.send(thingIngEventDataRequest, token);
+        ErrorResponse errorResponse = eventSenderService.send(thingIngEventDataRequest);
 
         if(errorResponse.getErrorCode() != ErrorCode.STATUS_OK)
             throw new ServiceUnavailableException(errorResponse.getErrorCode(),errorResponse.getMessage());
@@ -51,7 +51,7 @@ public class EventManagementService {
         if(eventOptional.isEmpty()) throw new IllegalArgumentException("Event with id "+id+ " not exists");
 
         ThingIngEventDataRequest thingIngEventDataRequest = dataParser.eventManagementRequestToThIngIngEvent(requestData);
-        ErrorResponse errorResponse = eventSenderService.send(thingIngEventDataRequest, token);
+        ErrorResponse errorResponse = eventSenderService.send(thingIngEventDataRequest);
 
         if(errorResponse.getErrorCode() != ErrorCode.STATUS_OK)
             throw new ServiceUnavailableException(errorResponse.getErrorCode(),errorResponse.getMessage());

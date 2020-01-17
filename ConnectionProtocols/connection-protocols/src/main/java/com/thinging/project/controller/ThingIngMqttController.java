@@ -34,7 +34,7 @@ public class ThingIngMqttController extends AbstractController{
             @RequestHeader("Authorization") String token) throws MqttException {
 
         mqttService.removeEventHandler(clientId);
-        return respondEmpty();
+        return respondOK("success");
     }
 
     @PostMapping("/publish")
@@ -46,7 +46,7 @@ public class ThingIngMqttController extends AbstractController{
             @RequestBody String message) throws MqttException {
 
         mqttService.publishToTopic(clientId,topic, message, qos);
-        return respondEmpty();
+        return respondOK("success");
     }
 
     @GetMapping("/subscribe")
@@ -57,7 +57,7 @@ public class ThingIngMqttController extends AbstractController{
             @RequestHeader("Authorization") String token) throws MqttException {
 
         mqttService.subscribeToTopic(clientId, topic, qos);
-        return respondEmpty();
+        return respondOK("success");
     }
 
     @GetMapping("/unsubscribe")
@@ -67,7 +67,7 @@ public class ThingIngMqttController extends AbstractController{
             @RequestHeader("Authorization") String token) throws MqttException {
 
         mqttService.unSubscribeFromTopic(clientId, topic);
-        return respondEmpty();
+        return respondOK("success");
     }
 
 }
