@@ -4,6 +4,7 @@ import com.thinging.project.security.utils.JwtTokenUtil;
 import com.thinging.project.service.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,12 +18,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired private JwtUserDetailsService jwtUserDetailsService;
-    @Autowired private JwtTokenUtil jwtTokenUtil;
+     private JwtUserDetailsService jwtUserDetailsService;
+     private JwtTokenUtil jwtTokenUtil;
+
+    @Lazy
+    public JwtRequestFilter( JwtUserDetailsService jwtUserDetailsService, JwtTokenUtil jwtTokenUtil) {
+        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

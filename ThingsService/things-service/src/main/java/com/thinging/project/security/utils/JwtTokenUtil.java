@@ -1,5 +1,6 @@
 package com.thinging.project.security.utils;
 
+import com.thinging.project.response.Role;
 import com.thinging.project.response.UserAccountDto;
 import com.thinging.project.security.dto.UserDetailsDto;
 import io.jsonwebtoken.Claims;
@@ -18,7 +19,7 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -2550185165626007488L;
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    public static final long JWT_TOKEN_EXPIRATION = 5 * 60 * 60;
 
     private String secret = "thingIngSecretKey";
 
@@ -50,9 +51,17 @@ public class JwtTokenUtil implements Serializable {
         return doGenerateToken(claims, userDetails.getEmail());
     }
 
+    public  String generateSystemTokenWithExpiration(UserAccountDto userDetails, Long JWT_TOKEN_EXPIRATION) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("user-details", new UserDetailsDto(userDetails.getEmail(), userDetails.getFirstName(), userDetails.getLastName(), userDetails.getRole()));
+        return Jwts.builder().setClaims(claims).setSubject(userDetails.getEmail()).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_EXPIRATION * 1000))
+                .signWith(SignatureAlgorithm.HS512, secret).compact();
+    }
+
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_EXPIRATION * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 

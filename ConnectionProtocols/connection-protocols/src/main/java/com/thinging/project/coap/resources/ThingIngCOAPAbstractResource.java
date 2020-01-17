@@ -6,6 +6,7 @@ import com.thinging.project.action.info.coap.COAPRequestInfo;
 import com.thinging.project.action.info.coap.COAPRequestType;
 import com.thinging.project.eventManagement.dto.ThingIngAction;
 import com.thinging.project.eventManagement.request.COAPEventRequest;
+import com.thinging.project.eventManagement.type.EventType;
 import com.thinging.project.eventManagement.type.ExecutionType;
 import com.thinging.project.request.COAPEventDataRequest;
 import org.eclipse.californium.core.CoapResource;
@@ -22,27 +23,11 @@ public class ThingIngCOAPAbstractResource extends CoapResource {
 
     private COAPEventDataRequest eventData;
     private ThingIngActionExecutor actionExecutor;
+    private ThingIngAction action;
     private String token;
 
     public ThingIngCOAPAbstractResource(String name) {
         super(name);
-    }
-
-    public ThingIngCOAPAbstractResource(String name, COAPEventDataRequest eventData, ThingIngActionExecutor actionExecutor) {
-        super(name);
-        this.eventData = eventData;
-        this.actionExecutor = actionExecutor;
-    }
-
-    public ThingIngCOAPAbstractResource(String name, boolean visible, COAPEventDataRequest eventData, ThingIngActionExecutor actionExecutor) {
-        super(name, visible);
-        this.eventData = eventData;
-        this.actionExecutor = actionExecutor;
-    }
-
-    public ThingIngCOAPAbstractResource(String name, ThingIngActionExecutor actionExecutor) {
-        super(name);
-        this.actionExecutor = actionExecutor;
     }
 
     public ThingIngActionExecutor getActionExecutor() {
@@ -55,6 +40,24 @@ public class ThingIngCOAPAbstractResource extends CoapResource {
 
     public COAPEventRequest addEvent(COAPEventDataRequest coapEventData) {
         this.eventData = coapEventData;
+        this.action = new ThingIngAction();
+
+        if(coapEventData.getEventType() == EventType.CUSTOM){
+            action.setRequestUrl(eventData.getAction().getRequestUrl());
+            action.setRequestMethod(eventData.getAction().getRequestMethod());
+            action.setRequestParams(eventData.getAction().getRequestParams());
+            action.setRequestHeaders(eventData.getAction().getRequestHeaders());
+            action.setRequestMethod(RequestMethod.POST);
+        }else{
+            action.setRequestHeaders(Map.of(
+                    "Authorization",token,
+                    "Content-Type","Application/json"
+            ));
+            action.setRequestMethod(RequestMethod.POST);
+            action.setRequestUrl("http://localhost:8089/system/events/coap/handler");
+            action.setRequestParams(new HashMap<>());
+        }
+
         return eventData.getEvent();
     }
 
@@ -105,14 +108,6 @@ public class ThingIngCOAPAbstractResource extends CoapResource {
 
         if(eventData == null) return;
 
-        ThingIngAction action = new ThingIngAction();
-
-        action.setRequestUrl(eventData.getAction().getRequestUrl());
-        action.setRequestMethod(eventData.getAction().getRequestMethod());
-        action.setRequestParams(eventData.getAction().getRequestParams());
-        action.setRequestHeaders(eventData.getAction().getRequestHeaders());
-        action.setRequestMethod(RequestMethod.POST);
-
         COAPRequestInfo coapRequestInfo = new COAPRequestInfo();
         Map<String,byte[]> requestOptions = new HashMap<>();
 
@@ -127,11 +122,9 @@ public class ThingIngCOAPAbstractResource extends CoapResource {
         coapRequestInfo.setSourcePort(exchange.getSourcePort());
         coapRequestInfo.setPayload(exchange.getRequestPayload());
         coapRequestInfo.setTimeStamp(System.currentTimeMillis());
-
         action.setRequestBody(coapRequestInfo);
-
         try {
-            actionExecutor.perform(action);
+            actionExecutor.perform(this.action);
         } catch (JsonProcessingException e) {
             System.out.println("Error!");
         }

@@ -1,7 +1,9 @@
 package com.thinging.project.service.sys;
 
+import com.thinging.project.config.ThingIngSystemUserConfig;
 import com.thinging.project.errors.UserExistsException;
 import com.thinging.project.errors.UserNotExistsException;
+import com.thinging.project.response.Role;
 import com.thinging.project.response.UserAccountDto;
 import com.thinging.project.dto.UserAccountResDto;
 import com.thinging.project.entity.UserAccount;
@@ -23,16 +25,20 @@ public class UserAccountService {
 
     private UserAccountRepository userRepository;
     private DataParser dataParser;
+    private ThingIngSystemUserConfig thingIngSystemUserConfig;
 
-    public UserAccountService(UserAccountRepository userRepository, DataParser dataParser) {
+    public UserAccountService(UserAccountRepository userRepository, DataParser dataParser, ThingIngSystemUserConfig thingIngSystemUserConfig) {
         this.userRepository = userRepository;
         this.dataParser = dataParser;
+        this.thingIngSystemUserConfig = thingIngSystemUserConfig;
     }
 
     public UserAccountDto createUser(UserAccountDto userReq) {
 
-        if(userRepository.existsByEmail(userReq.getEmail()))
+        if(userRepository.existsByEmail(userReq.getEmail()) || thingIngSystemUserConfig.getSystemUserEmail().equals(userReq.getEmail()))
             throw new UserExistsException(String.format("User with userName - %s exists",userReq.getEmail()));
+
+        if (userReq.getRole() == Role.SYSTEM) throw new UserNotExistsException(String.format("Only one System role can avalible!"));
 
         UserAccount newUser = dataParser.dtoToUserAccount(userReq,null);
 
@@ -43,6 +49,8 @@ public class UserAccountService {
         Optional<UserAccount> byId = userRepository.findById(id);
         if (byId.get() == null)
             throw new UserNotExistsException(String.format("User with userName - %s not exists",userReq.getEmail()));
+
+        if (userReq.getRole() == Role.SYSTEM) throw new UserNotExistsException(String.format("Only one System role can avalible!"));
 
         UserAccount updated = dataParser.dtoToUserAccount(userReq,byId.get());
 
@@ -64,6 +72,13 @@ public class UserAccountService {
     }
 
     public UserAccountDto getUserByEmail(String email) {
+        if(email.equals(thingIngSystemUserConfig.getSystemUserEmail())){
+            UserAccountDto userAccountDto = new UserAccountDto();
+            userAccountDto.setEmail(thingIngSystemUserConfig.getSystemUserEmail());
+            userAccountDto.setPassword(thingIngSystemUserConfig.getSystemUserPassword());
+            userAccountDto.setRole(Role.SYSTEM);
+            return userAccountDto;
+        }
         Optional<UserAccount> byEmail = userRepository.findByEmail(email);
         if (!byEmail.isPresent())
             throw new UserNotExistsException(String.format("User with userName - %s not exists",email));

@@ -3,6 +3,7 @@ package com.thinging.project.security.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -21,9 +22,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    @Autowired private UserDetailsService jwtUserDetailsService;
-    @Autowired private JwtRequestFilter filter;
+     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+     private UserDetailsService jwtUserDetailsService;
+     private JwtRequestFilter filter;
+
+    @Lazy
+    public WebSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, UserDetailsService jwtUserDetailsService, JwtRequestFilter filter) {
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.filter = filter;
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -46,9 +54,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         httpSecurity.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate", "/register","/user","/user/email")
-                .permitAll()
-                .antMatchers("/api/**").authenticated().and()
+                .antMatchers("/authenticate").permitAll()
+                .antMatchers("/api/**").authenticated()
+                .antMatchers("/users/**").hasAnyAuthority("ADMIN","SYSTEM")
+                .antMatchers("/system/**").hasAuthority("SYSTEM").and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

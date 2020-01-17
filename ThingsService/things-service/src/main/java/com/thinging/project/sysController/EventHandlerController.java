@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Validator;
 
 @RestController
-@RequestMapping("/api/events")
+@RequestMapping("/system/events")
 public class EventHandlerController extends AbstractController {
 
     protected EventHandlerController(Validator validator) {
@@ -20,7 +20,6 @@ public class EventHandlerController extends AbstractController {
     public ResponseEntity<String> messageDelivered(
             @RequestHeader("Authorization" ) String token,
             @RequestBody MQTTRequestInfo eventData){
-
 
         System.out.println("Message delivered!!!! " + eventData.getPayload());
         System.out.println("Topic information!!! "+eventData.getTopic());

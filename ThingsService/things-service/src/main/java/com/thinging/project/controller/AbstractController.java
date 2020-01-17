@@ -64,6 +64,13 @@ public abstract class AbstractController {
         return new ErrorResponse(e.getErrorCode(), e.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(ServiceUnavailableException.class)
+    @ResponseBody
+    protected final ErrorResponse serviceUnAvalible(final ServiceUnavailableException e) {
+        return new ErrorResponse(e.getErrorCode(), e.getMessage());
+    }
+
     protected <T> ResponseEntity<T> respondCreated(final T object){ return respond(object, HttpStatus.CREATED); }
     protected <T> ResponseEntity<T> respondOK(final T object){ return respond(object, HttpStatus.OK); }
     protected  <T> ResponseEntity<T> respondEmpty(){ return new ResponseEntity<>(HttpStatus.NO_CONTENT); }
