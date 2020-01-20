@@ -44,7 +44,6 @@ public class ThingsController extends AbstractController{
             @RequestParam("description") String description){
 
 
-
         return respondCreated(thingService.addThing(thingId,description));
     }
 
