@@ -10,16 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/data")
 public class DataController {
 
-    private DataControlService sparkService;
+    private DataControlService dataControlService;
 
-    public DataController(DataControlService sparkService) {
-        this.sparkService = sparkService;
+    public DataController(DataControlService dataControlService) {
+        this.dataControlService = dataControlService;
     }
 
     @GetMapping("/create/table")
     public String createTable(@RequestHeader("Authorization") String token){
 
-        sparkService.createTable("");
 
         return "success";
     }
