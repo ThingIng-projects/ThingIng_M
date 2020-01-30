@@ -1,8 +1,6 @@
 package com.thinging.project.controller;
 
 import com.thinging.project.service.dataServices.DataControlService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,11 +14,11 @@ public class DataController {
         this.dataControlService = dataControlService;
     }
 
-    @GetMapping("/create/table")
-    public String createTable(@RequestHeader("Authorization") String token){
-
-
-        return "success";
-    }
+//    @GetMapping("/create/table")
+//    public String createTable(@RequestHeader("Authorization") String token){
+//
+//
+//        return "success";
+//    }
 
 }
