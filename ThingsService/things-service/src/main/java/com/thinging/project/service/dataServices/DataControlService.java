@@ -7,10 +7,8 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class DataControlService {
-
-
 
     public DataControlService(){
         System.setProperty("hadoop.home.dir", "C:/winutils");

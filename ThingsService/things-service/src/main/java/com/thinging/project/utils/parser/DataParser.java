@@ -1,12 +1,12 @@
 package com.thinging.project.utils.parser;
 
-import com.thinging.project.dto.GroupRespDto;
-import com.thinging.project.dto.JobRespDto;
-import com.thinging.project.dto.ThingRespDto;
+import com.thinging.project.dto.*;
 
 import com.thinging.project.entity.*;
 import com.thinging.project.eventManagement.request.*;
 import com.thinging.project.persistance.EventDataValue;
+import com.thinging.project.req.ConnectionOptionReq;
+import com.thinging.project.req.TableInfoReq;
 import com.thinging.project.request.EventManagementServiceEventDataRequest;
 import com.thinging.project.request.ThingIngEventDataRequest;
 import com.thinging.project.response.UserAccountDto;
@@ -177,5 +177,51 @@ public class DataParser {
         userAccount.setRole(userAccountDto.getRole());
 
         return userAccount;
+    }
+
+    public TableInfo tableInfoRequestToEntity(TableInfoReq tableInfoRequest, TableInfo existing){
+        TableInfo tableInfo = existing==null ? new TableInfo():existing;
+
+        tableInfo.setName(tableInfoRequest.getName());
+        tableInfo.setStorageType(tableInfoRequest.getStorageType());
+        tableInfo.setStructure(tableInfoRequest.getStructure());
+        tableInfo.setTableType(tableInfoRequest.getTableType());
+        return tableInfo;
+    }
+
+    public TableInfoDto entityToTableInfoDto(TableInfo tableInfo){
+
+        TableInfoDto tableInfoDto = new TableInfoDto();
+
+        tableInfoDto.setId(tableInfo.getId());
+        tableInfoDto.setConnectionOptionDto(entityToConnectionOptionDto(tableInfo.getConnectionOption()));
+        tableInfoDto.setName(tableInfo.getName());
+        tableInfoDto.setStorageType(tableInfo.getStorageType());
+        tableInfoDto.setTableType(tableInfo.getTableType());
+        tableInfoDto.setStructure(tableInfo.getStructure());
+
+        return tableInfoDto;
+    }
+
+    public ConnectionOption connectionOptionsReqToEntity(ConnectionOptionReq connectionOptionReq, ConnectionOption existing) {
+        ConnectionOption connectionOption = existing==null ? new ConnectionOption():existing;
+
+        connectionOption.setDbTable(connectionOptionReq.getDbTable());
+        connectionOption.setPassword(connectionOptionReq.getPassword());
+        connectionOption.setUrl(connectionOptionReq.getUrl());
+        connectionOption.setUserName(connectionOptionReq.getUserName());
+
+        return connectionOption;
+    }
+    public ConnectionOptionDto entityToConnectionOptionDto(ConnectionOption connectionOption){
+        ConnectionOptionDto connectionOptionDto = new ConnectionOptionDto();
+
+        connectionOptionDto.setDbTable(connectionOption.getDbTable());
+        connectionOptionDto.setUserName(connectionOption.getUserName());
+        connectionOptionDto.setPassword(connectionOption.getPassword());
+        connectionOptionDto.setUrl(connectionOption.getUrl());
+        connectionOptionDto.setId(connectionOption.getId());
+
+        return connectionOptionDto;
     }
 }

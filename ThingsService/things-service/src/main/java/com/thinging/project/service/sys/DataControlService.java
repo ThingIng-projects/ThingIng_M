@@ -2,10 +2,12 @@ package com.thinging.project.service.sys;
 
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class DataControlService {
 
-    public void createtable(){
+    
+    public void createTable(String sql){
         return ;
     }
 

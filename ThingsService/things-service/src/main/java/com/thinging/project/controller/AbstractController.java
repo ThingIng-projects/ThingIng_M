@@ -4,6 +4,7 @@ import com.thinging.project.errors.*;
 import com.thinging.project.errors.utils.ErrorCode;
 import com.thinging.project.errors.utils.ErrorResponse;
 import com.thinging.project.request.AbstractThingIngRequest;
+import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
@@ -69,6 +70,13 @@ public abstract class AbstractController {
     @ResponseBody
     protected final ErrorResponse serviceUnAvalible(final ServiceUnavailableException e) {
         return new ErrorResponse(e.getErrorCode(), e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(PSQLException.class)
+    @ResponseBody
+    protected final ErrorResponse serviceUnAvalible(final PSQLException e) {
+        return new ErrorResponse(ErrorCode.DB_ERROR, e.getMessage());
     }
 
     protected <T> ResponseEntity<T> respondCreated(final T object){ return respond(object, HttpStatus.CREATED); }
