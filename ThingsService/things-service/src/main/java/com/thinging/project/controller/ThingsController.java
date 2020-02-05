@@ -43,6 +43,7 @@ public class ThingsController extends AbstractController{
             @RequestParam("thing-id") String thingId,
             @RequestParam("description") String description){
 
+
         return respondCreated(thingService.addThing(thingId,description));
     }
 

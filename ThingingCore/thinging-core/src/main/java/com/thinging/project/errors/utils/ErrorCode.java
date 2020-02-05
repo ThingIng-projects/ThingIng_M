@@ -3,6 +3,7 @@ package com.thinging.project.errors.utils;
 public enum ErrorCode {
     STATUS_OK,
     STATUS_CREATED,
+    DB_ERROR,
     ILLEGAL_ARGUMENT,
     RUNTIME_ERROR,
     SERVER_NOT_STARTED,

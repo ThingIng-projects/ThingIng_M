@@ -17,7 +17,6 @@
 
     <modules>
         <module>ThingingCore/thinging-core</module>
-        <module>DataService/data-service</module>
         <module>ThingsService/things-service</module>
         <module>ConnectionProtocols/connection-protocols</module>
     </modules>
